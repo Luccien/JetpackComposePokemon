@@ -17,6 +17,7 @@ import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.plcoding.jetpackcomposepokedex.pokemondetail.PokemonDetailScreen
 import com.plcoding.jetpackcomposepokedex.pokemonlist.PokemonListScreen
+import com.plcoding.jetpackcomposepokedex.pokemonsavedfavorites.PokemonSavedFavoritesScreen
 import com.plcoding.jetpackcomposepokedex.ui.theme.JetpackComposePokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -54,6 +55,30 @@ class MainActivity : ComponentActivity() {
                             it.arguments?.getString("pokemonName")
                         }
                         PokemonDetailScreen(
+                            dominantColor = dominantColor,
+                            pokemonName = pokemonName?.toLowerCase(Locale.ROOT) ?: "",
+                            navController = navController
+                        )
+                    }
+                    composable(
+                        "pokemon_saved_favorites_screen/{dominantColor}/{pokemonName}",
+                        arguments = listOf(
+                            navArgument("dominantColor") {
+                                type = NavType.IntType
+                            },
+                            navArgument("pokemonName") {
+                                type = NavType.StringType
+                            }
+                        )
+                    ) {
+                        val dominantColor = remember {
+                            val color = it.arguments?.getInt("dominantColor")
+                            color?.let { Color(it) } ?: Color.White
+                        }
+                        val pokemonName = remember {
+                            it.arguments?.getString("pokemonName")
+                        }
+                        PokemonSavedFavoritesScreen(
                             dominantColor = dominantColor,
                             pokemonName = pokemonName?.toLowerCase(Locale.ROOT) ?: "",
                             navController = navController

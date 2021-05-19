@@ -184,7 +184,9 @@ fun PokedexEntry(
             )
             .clickable {
                 navController.navigate(
-                    "pokemon_detail_screen/${dominantColor.toArgb()}/${entry.pokemonName}"
+
+                    "pokemon_saved_favorites_screen/${dominantColor.toArgb()}/${entry.pokemonName}"
+                    //"pokemon_detail_screen/${dominantColor.toArgb()}/${entry.pokemonName}"
                 )
             }
     ) {

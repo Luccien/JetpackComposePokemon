@@ -190,10 +190,10 @@ fun PokemonDetailSection(
             color = MaterialTheme.colors.onSurface
         )
         PokemonTypeSection(types = pokemonInfo.types)
-        PokemonDetailDataSection(
+        /*PokemonDetailDataSection(
             pokemonWeight = pokemonInfo.weight,
             pokemonHeight = pokemonInfo.height
-        )
+        )*/
         PokemonBaseStats(pokemonInfo = pokemonInfo)
     }
 }
@@ -225,6 +225,7 @@ fun PokemonTypeSection(types: List<Type>) {
     }
 }
 
+/*
 @Composable
 fun PokemonDetailDataSection(
     pokemonWeight: Int,
@@ -258,6 +259,8 @@ fun PokemonDetailDataSection(
         )
     }
 }
+*/
+
 
 @Composable
 fun PokemonDetailDataItem(
