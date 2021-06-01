@@ -1,8 +1,8 @@
 package com.plcoding.jetpackcomposepokedex.util
 
 import androidx.compose.ui.graphics.Color
-import com.plcoding.jetpackcomposepokedex.data.remote.responses.Type
-import com.plcoding.jetpackcomposepokedex.data.remote.responses.Stat
+import com.plcoding.jetpackcomposepokedex.network.remote.responses.Type
+import com.plcoding.jetpackcomposepokedex.network.remote.responses.Stat
 import com.plcoding.jetpackcomposepokedex.ui.theme.*
 import java.util.*
 

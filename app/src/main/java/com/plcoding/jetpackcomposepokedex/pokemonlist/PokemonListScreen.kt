@@ -11,7 +11,6 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -35,7 +34,7 @@ import androidx.navigation.compose.navigate
 import coil.request.ImageRequest
 import com.google.accompanist.coil.CoilImage
 import com.plcoding.jetpackcomposepokedex.R
-import com.plcoding.jetpackcomposepokedex.data.models.PokedexListEntry
+import com.plcoding.jetpackcomposepokedex.network.models.PokedexListEntry
 import com.plcoding.jetpackcomposepokedex.ui.theme.RobotoCondensed
 
 @Composable

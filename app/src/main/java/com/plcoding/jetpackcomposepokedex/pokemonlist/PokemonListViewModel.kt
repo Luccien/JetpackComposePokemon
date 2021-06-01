@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
-import com.plcoding.jetpackcomposepokedex.data.models.PokedexListEntry
+import com.plcoding.jetpackcomposepokedex.network.models.PokedexListEntry
 import com.plcoding.jetpackcomposepokedex.repository.PokemonRepository
 import com.plcoding.jetpackcomposepokedex.util.Constants.PAGE_SIZE
 import com.plcoding.jetpackcomposepokedex.util.Resource

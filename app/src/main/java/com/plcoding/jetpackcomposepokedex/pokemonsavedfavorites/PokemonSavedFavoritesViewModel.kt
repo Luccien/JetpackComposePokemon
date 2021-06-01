@@ -1,7 +1,7 @@
 package com.plcoding.jetpackcomposepokedex.pokemonsavedfavorites
 
 import androidx.lifecycle.ViewModel
-import com.plcoding.jetpackcomposepokedex.data.remote.responses.Pokemon
+import com.plcoding.jetpackcomposepokedex.network.remote.responses.Pokemon
 import com.plcoding.jetpackcomposepokedex.repository.PokemonRepository
 import com.plcoding.jetpackcomposepokedex.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
