@@ -8,5 +8,6 @@ data class PokemonDomainModel(
     val height: Int,
     val sprites: Sprites,
     val stats: List<Stat>,
-    val weight: Int
+    val weight: Int,
+    val types: List<Type>
 )

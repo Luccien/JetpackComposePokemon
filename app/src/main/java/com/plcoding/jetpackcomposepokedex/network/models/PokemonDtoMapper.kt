@@ -16,7 +16,8 @@ class PokemonDtoMapper  : DomainMapperTo<Pokemon, PokemonDomainModel> {
             height = model.height,
             sprites = model.sprites,
             stats = model.stats,
-            weight = model.weight
+            weight = model.weight,
+            types = model.types
         )
     }
 
@@ -32,7 +33,8 @@ class PokemonDtoMapper  : DomainMapperTo<Pokemon, PokemonDomainModel> {
             height = domainModel.height,
             sprites = domainModel.sprites,
             stats = domainModel.stats,
-            weight = domainModel.weight
+            weight = domainModel.weight,
+            types = domainModel.types
         )
     }*/
 }

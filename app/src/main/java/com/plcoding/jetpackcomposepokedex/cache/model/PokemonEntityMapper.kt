@@ -11,7 +11,8 @@ class PokemonEntityMapper : DomainMapperToImpl<PokemonEntity, PokemonDomainModel
             height = model.height,
             sprites = model.sprites,
             stats = model.stats,
-            weight = model.weight
+            weight = model.weight,
+            types = model.types
         )
     }
 
@@ -22,7 +23,8 @@ class PokemonEntityMapper : DomainMapperToImpl<PokemonEntity, PokemonDomainModel
             height = domainModel.height,
             sprites = domainModel.sprites,
             stats = domainModel.stats,
-            weight = domainModel.weight
+            weight = domainModel.weight,
+            types = domainModel.types
 
         )
     }

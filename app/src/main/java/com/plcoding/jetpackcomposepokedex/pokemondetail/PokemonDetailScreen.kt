@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.coil.CoilImage
+import com.plcoding.jetpackcomposepokedex.domain.model.PokemonDomainModel
 import com.plcoding.jetpackcomposepokedex.network.remote.responses.Pokemon
 import com.plcoding.jetpackcomposepokedex.network.remote.responses.Type
 import com.plcoding.jetpackcomposepokedex.util.Resource
@@ -45,15 +46,16 @@ import kotlin.math.round
 @Composable
 fun PokemonDetailScreen(
     dominantColor: Color,
-    pokemonName: String,
+    //pokemonName: String,
+    pokemonDM: PokemonDomainModel?,
     navController: NavController,
     topPadding: Dp = 20.dp,
     pokemonImageSize: Dp = 200.dp,
-    viewModel: PokemonDetailViewModel = hiltNavGraphViewModel()
+    //viewModel: PokemonDetailViewModel = hiltNavGraphViewModel()
 ) {
-    val pokemonInfo = produceState<Resource<Pokemon>>(initialValue = Resource.Loading()) {
-        value = viewModel.getPokemonInfo(pokemonName)
-    }.value
+    //val pokemonInfo = produceState<Resource<Pokemon>>(initialValue = Resource.Loading()) {
+      //  value = viewModel.getPokemonInfo(pokemonName)
+    //}.value
     Box(modifier = Modifier
         .fillMaxSize()
         .background(dominantColor)
@@ -67,7 +69,7 @@ fun PokemonDetailScreen(
                 .align(Alignment.TopCenter)
         )
         PokemonDetailStateWrapper(
-            pokemonInfo = pokemonInfo,
+            pokemonDM = pokemonDM,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
@@ -94,11 +96,14 @@ fun PokemonDetailScreen(
         Box(contentAlignment = Alignment.TopCenter,
             modifier = Modifier
             .fillMaxSize()) {
-            if(pokemonInfo is Resource.Success) {
-                pokemonInfo.data?.sprites?.let {
-                    CoilImage(
+            //if(pokemonInfo is Resource.Success) {
+              //  pokemonInfo.data?.sprites?.let {
+            if(pokemonDM != null) {
+                pokemonDM.sprites?.let {
+
+                CoilImage(
                         data = it.frontDefault,
-                        contentDescription = pokemonInfo.data.name,
+                        contentDescription = pokemonDM.name,
                         fadeIn = true,
                         modifier = Modifier
                             .size(pokemonImageSize)
@@ -141,12 +146,25 @@ fun PokemonDetailTopSection(
     }
 }
 
+
 @Composable
 fun PokemonDetailStateWrapper(
-    pokemonInfo: Resource<Pokemon>,
+    pokemonDM: PokemonDomainModel?,
     modifier: Modifier = Modifier,
     loadingModifier: Modifier = Modifier
 ) {
+
+    if(pokemonDM != null) {
+        PokemonDetailSection(
+            pokemonInfo = pokemonDM,//pokemonInfo.data!!,
+            modifier = modifier
+                .offset(y = (-20).dp)
+        )
+    }
+    else{
+        /// todo show missing // but check if its alredy been handled elsewhere
+    }
+    /*
     when(pokemonInfo) {
         is Resource.Success -> {
             PokemonDetailSection(
@@ -168,12 +186,14 @@ fun PokemonDetailStateWrapper(
                 modifier = loadingModifier
             )
         }
-    }
+    }*/
 }
+
+
 
 @Composable
 fun PokemonDetailSection(
-    pokemonInfo: Pokemon,
+    pokemonInfo: PokemonDomainModel,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -344,7 +364,7 @@ fun PokemonStat(
 
 @Composable
 fun PokemonBaseStats(
-    pokemonInfo: Pokemon,
+    pokemonInfo: PokemonDomainModel,
     animDelayPerItem: Int = 100
 ) {
     val maxBaseStat = remember {

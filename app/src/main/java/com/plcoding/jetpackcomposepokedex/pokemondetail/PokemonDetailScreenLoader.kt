@@ -33,10 +33,13 @@ if (pokemonName == null){
     }
 
 
+
+
+
     val loading = viewModel.loading.value
     val pokemon = viewModel.pokemon.value
 
-    
+
     if (loading && pokemon == null) {
         // todo add loading animation
          //LoadingPokemonShimmer(imageHeight = IMAGE_HEIGHT.dp)
@@ -50,7 +53,8 @@ if (pokemonName == null){
         ) {
                 PokemonDetailScreen(
                     dominantColor = dominantColor,
-                    pokemonName = pokemonName?.toLowerCase(Locale.ROOT) ?: "",
+                    pokemonDM = pokemon, // TODO RENAME IN POKEMONINFO
+                    //pokemonName = pokemonName?.toLowerCase(Locale.ROOT) ?: "",
                     navController = navController
                 )
             }

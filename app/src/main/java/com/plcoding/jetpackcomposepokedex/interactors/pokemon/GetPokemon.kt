@@ -30,6 +30,7 @@ class GetPokemon (
 
 
             val networkPokemon = getPokemonFromNetwork(pokemonName) // dto -> domain
+            // TODO rename in pokemoninfo
             var pokemon = networkPokemon
 
             // emit and finish

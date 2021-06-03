@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.plcoding.jetpackcomposepokedex.network.remote.responses.Sprites
 import com.plcoding.jetpackcomposepokedex.network.remote.responses.Stat
+import com.plcoding.jetpackcomposepokedex.network.remote.responses.Type
 
 @Entity(tableName = "pokemons")
 data class PokemonEntity(
@@ -33,5 +34,9 @@ data class PokemonEntity(
 
     // Value from API
     @ColumnInfo(name = "weight")
-    val weight: Int
+    val weight: Int,
+
+    // Value from API
+    @ColumnInfo(name = "types")
+    val types: List<Type>
 )
