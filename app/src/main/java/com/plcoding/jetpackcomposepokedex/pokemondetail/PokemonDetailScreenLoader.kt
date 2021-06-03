@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.NavController
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
 import java.util.*
 
 @Composable
@@ -40,9 +40,14 @@ if (pokemonName == null){
     val pokemon = viewModel.pokemon.value
 
 
-    if (loading && pokemon == null) {
+    if (true){//(loading && pokemon == null) {
         // todo add loading animation
          //LoadingPokemonShimmer(imageHeight = IMAGE_HEIGHT.dp)
+        CircularProgressIndicator(
+            color = MaterialTheme.colors.primary,
+           // loadingModifier: Modifier = Modifier
+            modifier = Modifier
+        )
     }
     else if(!loading && pokemon == null && onLoad){
         TODO("Show Invalid Recipe")
