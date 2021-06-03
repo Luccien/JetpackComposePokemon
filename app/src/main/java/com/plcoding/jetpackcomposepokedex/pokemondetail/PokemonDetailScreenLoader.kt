@@ -18,6 +18,25 @@ fun PokemonDetailScreenLoader(
     navController: NavController
 
 )
+
+/*
+if (pokemonId == null){
+
+}else {
+    // fire a one-off event to get the pokemon from api
+    val onLoad = viewModel.onLoad.value
+    if (!onLoad) {
+        viewModel.onLoad.value = true
+
+    }
+
+    val loading = viewModel.loading.value
+
+    val pokemon = viewModel.pokemon.value
+
+    val dialogQueue = viewModel.dialogQueue
+*/
+
 {
     Box (
         modifier = Modifier.fillMaxSize()
