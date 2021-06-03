@@ -16,7 +16,7 @@ import javax.inject.Singleton
 object CacheModule {
 
 
-
+/*
     @Singleton
     @Provides
     fun provideDb(app: PokedexApplication): AppDatabase {
@@ -28,15 +28,15 @@ object CacheModule {
 
     @Singleton
     @Provides
-    fun provideRecipeDao(db: AppDatabase): PokemonDao {
+    fun providePokemonDao(db: AppDatabase): PokemonDao {
         return db.pokemonDao()
     }
 
     @Singleton
     @Provides
-    fun provideCacheRecipeMapper(): PokemonEntityMapper {
+    fun provideCachePokemonMapper(): PokemonEntityMapper {
         return PokemonEntityMapper()
     }
-
+*/
 
 }

@@ -15,49 +15,49 @@ import java.util.*
 fun PokemonDetailScreenLoader(
     dominantColor: Color,
     pokemonName: String,
-    navController: NavController
+    navController: NavController,
+    viewModel: PokemonDetailViewModel = hiltNavGraphViewModel()
 
-)
+){
 
-/*
-if (pokemonId == null){
 
+if (pokemonName == null){
+  // TODO show invalid pokemon
 }else {
+
     // fire a one-off event to get the pokemon from api
     val onLoad = viewModel.onLoad.value
     if (!onLoad) {
         viewModel.onLoad.value = true
-
+        viewModel.onTriggerEvent(pokemonName)
     }
 
-    val loading = viewModel.loading.value
 
+    val loading = viewModel.loading.value
     val pokemon = viewModel.pokemon.value
 
-    val dialogQueue = viewModel.dialogQueue
-*/
+    
+    if (loading && pokemon == null) {
+        // todo add loading animation
+         //LoadingPokemonShimmer(imageHeight = IMAGE_HEIGHT.dp)
+    }
+    else if(!loading && pokemon == null && onLoad){
+        TODO("Show Invalid Recipe")
+    }
+    else {
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+                PokemonDetailScreen(
+                    dominantColor = dominantColor,
+                    pokemonName = pokemonName?.toLowerCase(Locale.ROOT) ?: "",
+                    navController = navController
+                )
+            }
 
-{
-    Box (
-        modifier = Modifier.fillMaxSize()
-    ){
-        if(true){
-            PokemonDetailScreen(
-                dominantColor = dominantColor,
-                pokemonName = pokemonName?.toLowerCase(Locale.ROOT) ?: "",
-                navController = navController
-            )
         }
-        /*
-        if (loading && recipe == null) {
-            LoadingRecipeShimmer(imageHeight = IMAGE_HEIGHT.dp)
-        }
-        else if(!loading && recipe == null && onLoad){
-            TODO("Show Invalid Recipe")
-        }
-        else {
-            recipe?.let {RecipeView(recipe = it) }
-        }*/
+
+
     }
 
 }
