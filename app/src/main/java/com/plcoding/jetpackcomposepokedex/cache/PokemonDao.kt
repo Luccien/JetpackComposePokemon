@@ -8,28 +8,30 @@ import com.plcoding.jetpackcomposepokedex.cache.model.PokemonEntity
 
 @Dao
 interface PokemonDao {
+    // pokemon name is unique and in api the name is used to get the detail of the pokemon
 
     @Insert
     suspend fun insertPokemon(pokemon: PokemonEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertRecipes(pokemon: List<PokemonEntity>): LongArray
+    suspend fun insertPokemons(pokemon: List<PokemonEntity>): LongArray
 
     @Query("SELECT * FROM pokemons WHERE name = :name")
-    suspend fun getRecipeById(id: Int): PokemonEntity?
-
-
-    // TODO names instead of ids
-    @Query("DELETE FROM pokemons WHERE id IN (:ids)")
-    suspend fun deleteRecipes(ids: List<Int>): Int
-
-    @Query("DELETE FROM pokemons")
-    suspend fun deleteAllRecipes()
+    suspend fun getPokemonByName(name: String): PokemonEntity?
 
     @Query("DELETE FROM pokemons WHERE name = :name")
-    suspend fun deleteRecipe(primaryKey: Int): Int
+    suspend fun deletePokemon(name: String): String
 
-    // TODO    add querry for searching
+
+
+
+
+    @Query("DELETE FROM pokemons WHERE id IN (:ids)")
+    suspend fun deletePokemons(ids: List<Int>): Int
+
+    @Query("DELETE FROM pokemons")
+    suspend fun deleteAllPokemons()
+
 
 
 }
