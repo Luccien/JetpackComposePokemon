@@ -10,7 +10,7 @@ import com.plcoding.jetpackcomposepokedex.cache.model.PokemonEntity
 interface PokemonDao {
     // pokemon name is unique and in api the name is used to get the detail of the pokemon
 
-    /*
+
     @Insert
     suspend fun insertPokemon(pokemon: PokemonEntity): Long
 
@@ -20,9 +20,13 @@ interface PokemonDao {
     @Query("SELECT * FROM pokemons WHERE name = :name")
     suspend fun getPokemonByName(name: String): PokemonEntity?
 
+
+
+    // TODO was causing error -- check later
+    /*
     @Query("DELETE FROM pokemons WHERE name = :name")
     suspend fun deletePokemon(name: String): String
-
+*/
 
 
 
@@ -32,7 +36,7 @@ interface PokemonDao {
 
     @Query("DELETE FROM pokemons")
     suspend fun deleteAllPokemons()
-*/
+
 
 
 }

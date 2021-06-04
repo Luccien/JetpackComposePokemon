@@ -29,8 +29,24 @@ class GetPokemon (
             delay(1000)
 
 
-            val networkPokemon = getPokemonFromNetwork(pokemonName) // dto -> domain
-            var pokemon = networkPokemon
+            var pokemon = getPokemonFromCache(pokemonName = pokemonName)
+
+            if(pokemon != null){
+                emit(DataState.success(pokemon))
+            }
+            else{
+                val networkPokemon = getPokemonFromNetwork(pokemonName) // dto -> domain
+
+                // insert into cache
+                pokemonDao.insertPokemon(
+                    // map domain -> entity
+                    entityMapper.mapFromDomainModel(networkPokemon)
+                )
+
+            }
+
+            // get from cache
+            pokemon = getPokemonFromCache(pokemonName = pokemonName)
 
             // emit and finish
             if(pokemon != null){
@@ -46,6 +62,13 @@ class GetPokemon (
         emit(DataState.error<PokemonDomainModel>(e.message ?: "Unknown Error"))
     }
 }
+
+
+    private suspend fun getPokemonFromCache(pokemonName: String): PokemonDomainModel? {
+        return pokemonDao.getPokemonByName(pokemonName)?.let { pokemonEntity ->
+            entityMapper.mapToDomainModel(pokemonEntity)
+        }
+    }
 
 
     private suspend fun getPokemonFromNetwork(pokemonName: String): PokemonDomainModel {
