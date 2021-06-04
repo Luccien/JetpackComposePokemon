@@ -62,7 +62,7 @@ fun PokemonDetailScreen(
 
         if(pokemonDM != null) {
             PokemonDetailSection(
-                pokemonInfo = pokemonDM,
+                pokemonDM = pokemonDM,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(
@@ -139,7 +139,7 @@ fun PokemonDetailTopSection(
 
 @Composable
 fun PokemonDetailSection(
-    pokemonInfo: PokemonDomainModel,
+    pokemonDM: PokemonDomainModel,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -151,18 +151,18 @@ fun PokemonDetailSection(
             .verticalScroll(scrollState)
     ) {
         Text(
-            text = "#${pokemonInfo.id} ${pokemonInfo.name.capitalize(Locale.ROOT)}",
+            text = "#${pokemonDM.id} ${pokemonDM.name.capitalize(Locale.ROOT)}",
             fontWeight = FontWeight.Bold,
             fontSize = 30.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.onSurface
         )
-        PokemonTypeSection(types = pokemonInfo.types)
+        PokemonTypeSection(types = pokemonDM.types)
         PokemonDetailDataSection(
-            pokemonWeight = pokemonInfo.weight,
-            pokemonHeight = pokemonInfo.height
+            pokemonWeight = pokemonDM.weight,
+            pokemonHeight = pokemonDM.height
         )
-        PokemonBaseStats(pokemonInfo = pokemonInfo)
+        PokemonBaseStats(pokemonDM = pokemonDM)
     }
 }
 
@@ -310,11 +310,11 @@ fun PokemonStat(
 
 @Composable
 fun PokemonBaseStats(
-    pokemonInfo: PokemonDomainModel,
+    pokemonDM: PokemonDomainModel,
     animDelayPerItem: Int = 100
 ) {
     val maxBaseStat = remember {
-        pokemonInfo.stats.maxOf { it.baseStat }
+        pokemonDM.stats.maxOf { it.baseStat }
     }
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -326,8 +326,8 @@ fun PokemonBaseStats(
         )
         Spacer(modifier = Modifier.height(4.dp))
 
-        for(i in pokemonInfo.stats.indices) {
-            val stat = pokemonInfo.stats[i]
+        for(i in pokemonDM.stats.indices) {
+            val stat = pokemonDM.stats[i]
             PokemonStat(
                 statName = parseStatToAbbr(stat),
                 statValue = stat.baseStat,

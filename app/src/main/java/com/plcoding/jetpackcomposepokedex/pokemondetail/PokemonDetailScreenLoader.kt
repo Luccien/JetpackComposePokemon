@@ -51,7 +51,7 @@ if (pokemonName == null){
         ) {
                 PokemonDetailScreen(
                     dominantColor = dominantColor,
-                    pokemonDM = pokemonDM, // TODO RENAME IN POKEMONINFO
+                    pokemonDM = pokemonDM,
                     navController = navController
                 )
             }
