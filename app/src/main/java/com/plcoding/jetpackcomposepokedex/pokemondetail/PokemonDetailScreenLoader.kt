@@ -32,24 +32,17 @@ if (pokemonName == null){
         viewModel.onTriggerEvent(pokemonName)
     }
 
-
-
-
-
     val loading = viewModel.loading.value
-    val pokemon = viewModel.pokemon.value
+    val pokemonDM = viewModel.pokemon.value
 
 
-    if (true){//(loading && pokemon == null) {
-        // todo add loading animation
-         //LoadingPokemonShimmer(imageHeight = IMAGE_HEIGHT.dp)
+    if (loading && pokemonDM == null) {
         CircularProgressIndicator(
             color = MaterialTheme.colors.primary,
-           // loadingModifier: Modifier = Modifier
             modifier = Modifier
         )
     }
-    else if(!loading && pokemon == null && onLoad){
+    else if(!loading && pokemonDM == null && onLoad){
         TODO("Show Invalid Recipe")
     }
     else {
@@ -58,8 +51,7 @@ if (pokemonName == null){
         ) {
                 PokemonDetailScreen(
                     dominantColor = dominantColor,
-                    pokemonDM = pokemon, // TODO RENAME IN POKEMONINFO
-                    //pokemonName = pokemonName?.toLowerCase(Locale.ROOT) ?: "",
+                    pokemonDM = pokemonDM, // TODO RENAME IN POKEMONINFO
                     navController = navController
                 )
             }

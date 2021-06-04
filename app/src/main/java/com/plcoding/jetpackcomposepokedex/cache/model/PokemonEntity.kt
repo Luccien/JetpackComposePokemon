@@ -11,7 +11,6 @@ import com.plcoding.jetpackcomposepokedex.network.remote.responses.Type
 data class PokemonEntity(
 
     // Value from API
-
     @ColumnInfo(name = "id")
     val id: Int,
 

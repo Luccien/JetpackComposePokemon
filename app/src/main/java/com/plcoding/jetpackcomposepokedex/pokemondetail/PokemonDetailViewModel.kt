@@ -20,7 +20,6 @@ import javax.inject.Inject
 @HiltViewModel
 class PokemonDetailViewModel @Inject constructor(
     private val getPokemon: GetPokemon,
-    private val repository: PokemonRepository
 ) : ViewModel() {
 
 
@@ -30,10 +29,6 @@ class PokemonDetailViewModel @Inject constructor(
 
     val onLoad: MutableState<Boolean> = mutableStateOf(false)
 
-    // TODO remove repository here
-    suspend fun getPokemonInfo(pokemonName: String): Resource<Pokemon> {
-        return repository.getPokemonInfo(pokemonName)
-    }
 
 
     fun onTriggerEvent(pokemonName: String) {

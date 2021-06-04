@@ -7,7 +7,6 @@ import com.plcoding.jetpackcomposepokedex.R
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -15,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,13 +28,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.coil.CoilImage
 import com.plcoding.jetpackcomposepokedex.domain.model.PokemonDomainModel
-import com.plcoding.jetpackcomposepokedex.network.remote.responses.Pokemon
 import com.plcoding.jetpackcomposepokedex.network.remote.responses.Type
-import com.plcoding.jetpackcomposepokedex.util.Resource
 import com.plcoding.jetpackcomposepokedex.util.parseStatToAbbr
 import com.plcoding.jetpackcomposepokedex.util.parseStatToColor
 import com.plcoding.jetpackcomposepokedex.util.parseTypeToColor
@@ -46,16 +41,12 @@ import kotlin.math.round
 @Composable
 fun PokemonDetailScreen(
     dominantColor: Color,
-    //pokemonName: String,
     pokemonDM: PokemonDomainModel?,
     navController: NavController,
     topPadding: Dp = 20.dp,
     pokemonImageSize: Dp = 200.dp,
-    //viewModel: PokemonDetailViewModel = hiltNavGraphViewModel()
 ) {
-    //val pokemonInfo = produceState<Resource<Pokemon>>(initialValue = Resource.Loading()) {
-      //  value = viewModel.getPokemonInfo(pokemonName)
-    //}.value
+
     Box(modifier = Modifier
         .fillMaxSize()
         .background(dominantColor)
@@ -96,9 +87,8 @@ fun PokemonDetailScreen(
         Box(contentAlignment = Alignment.TopCenter,
             modifier = Modifier
             .fillMaxSize()) {
-            //if(pokemonInfo is Resource.Success) {
-              //  pokemonInfo.data?.sprites?.let {
-            if(pokemonDM != null) {
+
+            if(pokemonDM?.sprites?.frontDefault != null) { // TODO null check necessary ?? should already be handeled in GetPokemon // here it is a nullcheck for the image url
                 pokemonDM.sprites?.let {
 
                 CoilImage(
@@ -156,37 +146,15 @@ fun PokemonDetailStateWrapper(
 
     if(pokemonDM != null) {
         PokemonDetailSection(
-            pokemonInfo = pokemonDM,//pokemonInfo.data!!,
+            pokemonInfo = pokemonDM,
             modifier = modifier
                 .offset(y = (-20).dp)
         )
     }
     else{
-        /// todo show missing // but check if its alredy been handled elsewhere
+        /// todo show missing // but should already be checked in interactor GetPokemon (no info for the user if it is missing yet)
     }
-    /*
-    when(pokemonInfo) {
-        is Resource.Success -> {
-            PokemonDetailSection(
-                pokemonInfo = pokemonInfo.data!!,
-                modifier = modifier
-                    .offset(y = (-20).dp)
-            )
-        }
-        is Resource.Error -> {
-            Text(
-                text = pokemonInfo.message!!,
-                color = Color.Red,
-                modifier = modifier
-            )
-        }
-        is Resource.Loading -> {
-            CircularProgressIndicator(
-                color = MaterialTheme.colors.primary,
-                modifier = loadingModifier
-            )
-        }
-    }*/
+
 }
 
 
