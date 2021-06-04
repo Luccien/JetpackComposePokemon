@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class GetPokemon (
-   // private val pokemonDao: PokemonDao,
-    //private val entityMapper: PokemonEntityMapper,
+    private val pokemonDao: PokemonDao,
+    private val entityMapper: PokemonEntityMapper,
     private val pokeApi: PokeApi,
     private val pokemonDtoMapper: PokemonDtoMapper,
         ) {

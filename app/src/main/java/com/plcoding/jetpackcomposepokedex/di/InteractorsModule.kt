@@ -1,6 +1,7 @@
 package com.plcoding.jetpackcomposepokedex.di
 
 import com.plcoding.jetpackcomposepokedex.cache.PokemonDao
+import com.plcoding.jetpackcomposepokedex.cache.database.AppDatabase
 import com.plcoding.jetpackcomposepokedex.cache.model.PokemonEntityMapper
 import com.plcoding.jetpackcomposepokedex.interactors.pokemon.GetPokemon
 import com.plcoding.jetpackcomposepokedex.network.models.PokemonDtoMapper
@@ -18,14 +19,14 @@ object InteractorsModule {
     @ViewModelScoped
     @Provides
     fun provideGetPokemon(
-        //pokemonDao: PokemonDao,
-        //pokemonEntityMapper: PokemonEntityMapper,
+        pokemonDao: PokemonDao,
+        pokemonEntityMapper: PokemonEntityMapper,
         pokeApi: PokeApi,
         pokemonDtoMapper: PokemonDtoMapper,
     ): GetPokemon {
         return GetPokemon(
-            //pokemonDao = pokemonDao,
-            //entityMapper = pokemonEntityMapper,
+            pokemonDao = pokemonDao,
+            entityMapper = pokemonEntityMapper,
             pokeApi = pokeApi,
             pokemonDtoMapper = pokemonDtoMapper,
         )
