@@ -59,31 +59,30 @@ fun PokemonDetailScreen(
                 .fillMaxHeight(0.2f)
                 .align(Alignment.TopCenter)
         )
-        PokemonDetailStateWrapper(
-            pokemonDM = pokemonDM,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    top = topPadding + pokemonImageSize / 2f,
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 16.dp
-                )
-                .shadow(10.dp, RoundedCornerShape(10.dp))
-                .clip(RoundedCornerShape(10.dp))
-                .background(MaterialTheme.colors.surface)
-                .padding(16.dp)
-                .align(Alignment.BottomCenter),
-            loadingModifier = Modifier
-                .size(100.dp)
-                .align(Alignment.Center)
-                .padding(
-                    top = topPadding + pokemonImageSize / 2f,
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 16.dp
-                )
-        )
+
+        if(pokemonDM != null) {
+            PokemonDetailSection(
+                pokemonInfo = pokemonDM,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        top = topPadding + pokemonImageSize / 2f,
+                        start = 16.dp,
+                        end = 16.dp,
+                        bottom = 16.dp
+                    )
+                    .shadow(10.dp, RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(MaterialTheme.colors.surface)
+                    .padding(16.dp)
+                    .align(Alignment.BottomCenter)
+                    .offset(y = (-20).dp)
+            )
+        }
+        else{
+            /// todo show missing // but should already be checked in interactor GetPokemon (no info for the user if it is missing yet)
+        }
+
         Box(contentAlignment = Alignment.TopCenter,
             modifier = Modifier
             .fillMaxSize()) {
@@ -134,27 +133,6 @@ fun PokemonDetailTopSection(
                 }
         )
     }
-}
-
-
-@Composable
-fun PokemonDetailStateWrapper(
-    pokemonDM: PokemonDomainModel?,
-    modifier: Modifier = Modifier,
-    loadingModifier: Modifier = Modifier
-) {
-
-    if(pokemonDM != null) {
-        PokemonDetailSection(
-            pokemonInfo = pokemonDM,
-            modifier = modifier
-                .offset(y = (-20).dp)
-        )
-    }
-    else{
-        /// todo show missing // but should already be checked in interactor GetPokemon (no info for the user if it is missing yet)
-    }
-
 }
 
 
