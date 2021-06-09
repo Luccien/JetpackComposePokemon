@@ -25,16 +25,5 @@ class PokemonDtoMapper  : DomainMapperTo<Pokemon, PokemonDomainModel> {
         return initial.map { mapToDomainModel(it) }
     }
 
-    /*
-    override fun mapFromDomainModel(domainModel: PokemonDomainModel): Pokemon {
-        return Pokemon(
-            id = domainModel.id,
-            name = domainModel.name,
-            height = domainModel.height,
-            sprites = domainModel.sprites,
-            stats = domainModel.stats,
-            weight = domainModel.weight,
-            types = domainModel.types
-        )
-    }*/
+
 }

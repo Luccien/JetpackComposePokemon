@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.plcoding.jetpackcomposepokedex.cache.PokemonDao
 import com.plcoding.jetpackcomposepokedex.cache.model.PokemonEntity
 
-@Database(entities = [PokemonEntity::class ], version = 18)
+@Database(entities = [PokemonEntity::class ], version = 20)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase(){
 
