@@ -9,8 +9,8 @@ class PokemonEntityMapper : DomainMapperToImpl<PokemonEntity, PokemonDomainModel
             id = model.id,
             name = model.name,
             height = model.height,
-            sprites = model.sprites,
-            stats = model.stats,
+           sprites = model.sprites,
+          stats = model.stats,
             weight = model.weight,
             types = model.types
         )

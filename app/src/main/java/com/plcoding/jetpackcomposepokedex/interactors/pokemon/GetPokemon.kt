@@ -37,6 +37,7 @@ class GetPokemon (
             else{
                 val networkPokemon = getPokemonFromNetwork(pokemonName) // dto -> domain
 
+
                 // insert into cache
                 pokemonDao.insertPokemon(
                     // map domain -> entity
@@ -44,6 +45,9 @@ class GetPokemon (
                 )
 
             }
+
+
+
 
             // get from cache
             pokemon = getPokemonFromCache(pokemonName = pokemonName)
@@ -55,6 +59,9 @@ class GetPokemon (
             else{
                 throw Exception("Unable to get recipe from the cache.")
             }
+
+
+
         }
 
      catch (e: Exception)

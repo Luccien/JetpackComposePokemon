@@ -314,7 +314,7 @@ fun PokemonBaseStats(
     animDelayPerItem: Int = 100
 ) {
     val maxBaseStat = remember {
-        pokemonDM.stats.maxOf { it.baseStat }
+       pokemonDM.stats.maxOf { it.baseStat }
     }
     Column(
         modifier = Modifier.fillMaxWidth()

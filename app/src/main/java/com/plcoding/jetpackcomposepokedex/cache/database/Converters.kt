@@ -5,26 +5,38 @@ import com.plcoding.jetpackcomposepokedex.network.remote.responses.*
 
 class Converters {
 
+
+
     @TypeConverter
     fun fromSprites(sprite: Sprites):String{
-        return sprite.frontDefault
+        return sprite.frontDefault.toString()
     }
 
-    // only sprite.frontDefault  will be stored and restored --> GOSH! <--  "a" is just to fill
+    // only sprite.frontDefault  will be stored and restored ,  "a" is just to fill
     @TypeConverter
     fun toSprites(frontDefault:String):Sprites{
-        return Sprites("a","a","a","a",frontDefault,"a","a","a", Other(DreamWorld("a","a"),
+        return Sprites("a","a","a","a",frontDefault.toString(),"a","a","a", Other(DreamWorld("a","a"),
             OfficialArtwork("a")
-        ), Versions(GenerationI(RedBlue("a","a","a","a"),Yellow("a","a","a","a")), GenerationIi(
-            Crystal("a","a","a","a"), Gold("a","a","a","a"), Silver("a","a","a","a")
-        ), GenerationIii(Emerald("a","a"), FireredLeafgreen("a","a","a","a"),RubySapphire("a","a","a","a")),
-            GenerationIv(DiamondPearl("a","a","a","a","a","a","a","a"),
-                HeartgoldSoulsilver("a","a","a","a","a","a","a","a"), Platinum("a","a","a","a","a","a","a","a")
-            ), GenerationV
-        (BlackWhite(Animated("a","a","a","a","a","a","a","a"),"a","a","a","a","a","a","a","a")), GenerationVi
-        (OmegarubyAlphasapphire("a","a","a","a"),XY("a","a","a","a")),
-            GenerationVii(Icons("a","a"), UltraSunUltraMoon("a","a","a","a")),
-            GenerationViii(IconsX("a","a"))
+        ), Versions(
+
+            GenerationI(
+                    RedBlue("a","a","a","a"),Yellow("a","a","a","a")),
+            GenerationIi(
+                    Crystal("a","a","a","a"), Gold("a","a","a","a"), Silver("a","a","a","a")
+                    ),
+            GenerationIii(
+                    Emerald("a","a"), FireredLeafgreen("a","a","a","a"),RubySapphire("a","a","a","a")),
+            GenerationIv(
+                    DiamondPearl("a","a","a","a","a","a","a","a"),
+                    HeartgoldSoulsilver("a","a","a","a","a","a","a","a"), Platinum("a","a","a","a","a","a","a","a")
+                    ),
+            GenerationV
+                        (BlackWhite(Animated("a","a","a","a","a","a","a","a"),"a","a","a","a","a","a","a","a")), GenerationVi
+                        (OmegarubyAlphasapphire("a","a","a","a"),XY("a","a","a","a")),
+            GenerationVii(
+                        Icons("a","a"), UltraSunUltraMoon("a","a","a","a")),
+            GenerationViii(
+                        IconsX("a","a"))
         )
         )
     }
@@ -62,15 +74,24 @@ class Converters {
         // list of all stats
         val allStat = statsS.split(";;;;x").toTypedArray()
         for(i in allStat.indices) {
-            // list of stat values
-            val statValues = allStat[i].split(",,,,q").toTypedArray()
-            // put all 4 values in one sigle Stat
-            val stat = Stat(statValues[0].toInt(),statValues[1].toInt(), StatX(statValues[2].toString(),statValues[3].toString()))
-            // add the stat object to the List
-            stats.add(stat)
+            // last index is empty
+            if(i < allStat.size-1 ) {
+                // list of stat values
+                val statValues = allStat[i].split(",,,,q").toTypedArray()
+                // put all 4 values in one single Stat
+                val stat = Stat(
+                    statValues[0].toInt(),
+                    statValues[1].toInt(),
+                    StatX(statValues[2].toString(), statValues[3].toString())
+                )
+                // add the stat object to the List
+                stats.add(stat)
+            }
 
         }
+
         return stats
+
     }
 
     //--------------
@@ -85,7 +106,7 @@ class Converters {
             typString +=typ.type.name.toString()
             typString +=",,,,q"
             typString +=typ.type.url.toString()
-            typString +=";;;;x"
+
         }
         return typString
     }
@@ -96,16 +117,21 @@ class Converters {
         var typs:MutableList<Type> = mutableListOf()
 
         // list of all typs
-        val allTyp = typsS.split(";;;;x").toTypedArray()
+        val allTyp = typsS.split(";;;;x").toTypedArray()//
+        //allTyp.removeLast()
         for(i in allTyp.indices) {
-            // list of typ values
-            val typValues = allTyp[i].split(",,,,q").toTypedArray()
-            // put all 3 values in one sigle Typ
-            val typ = Type(typValues[0].toInt(), TypeX(typValues[1].toString(),typValues[2].toString()))
-            // add the typ object to the List
-            typs.add(typ)
+            // last index is empty
+            if(i < allTyp.size-1 ) {
+                // list of typ values
+                val typValues = allTyp[i].split(",,,,q").toTypedArray()
+                // put all 3 values in one sigle Typ
+                val typ = Type(typValues[0].toInt(), TypeX(typValues[1], typValues[2]))
+                // add the typ object to the List
+                typs.add(typ)
+            }
 
         }
+
         return typs
     }
 
