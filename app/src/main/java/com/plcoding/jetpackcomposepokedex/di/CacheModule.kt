@@ -2,8 +2,10 @@ package com.plcoding.jetpackcomposepokedex.di
 
 import androidx.room.Room
 import com.plcoding.jetpackcomposepokedex.PokedexApplication
+import com.plcoding.jetpackcomposepokedex.cache.PokedexListEntryDao
 import com.plcoding.jetpackcomposepokedex.cache.PokemonDao
 import com.plcoding.jetpackcomposepokedex.cache.database.AppDatabase
+import com.plcoding.jetpackcomposepokedex.cache.model.PokedexListEntryEntityMapper
 import com.plcoding.jetpackcomposepokedex.cache.model.PokemonEntityMapper
 import dagger.Module
 import dagger.Provides
@@ -36,6 +38,18 @@ object CacheModule {
     @Provides
     fun provideCachePokemonMapper(): PokemonEntityMapper {
         return PokemonEntityMapper()
+    }
+
+    @Singleton
+    @Provides
+    fun providePokedexListEntryDao(db: AppDatabase): PokedexListEntryDao {
+        return db.pokedexListEntryDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideCachePokedexListEntryMapper(): PokedexListEntryEntityMapper {
+        return PokedexListEntryEntityMapper()
     }
 
 
