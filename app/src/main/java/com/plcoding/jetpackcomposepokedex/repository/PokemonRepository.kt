@@ -2,7 +2,7 @@ package com.plcoding.jetpackcomposepokedex.repository
 
 import com.plcoding.jetpackcomposepokedex.network.remote.PokeApi
 import com.plcoding.jetpackcomposepokedex.network.remote.responsestoplevel.PokemonDto
-import com.plcoding.jetpackcomposepokedex.network.remote.responses.PokemonList
+import com.plcoding.jetpackcomposepokedex.network.remote.responsestoplevel.PokemonListResponse
 import com.plcoding.jetpackcomposepokedex.util.Resource
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
@@ -12,7 +12,7 @@ class PokemonRepository @Inject constructor(
    private val api: PokeApi
 ) {
 
-    suspend fun getPokemonList(limit: Int, offset: Int): Resource<PokemonList> {
+    suspend fun getPokemonList(limit: Int, offset: Int): Resource<PokemonListResponse> {
         val response = try {
             api.getPokemonList(limit, offset)
         } catch(e: Exception) {
