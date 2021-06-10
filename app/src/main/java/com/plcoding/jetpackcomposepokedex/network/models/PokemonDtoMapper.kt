@@ -2,8 +2,7 @@ package com.plcoding.jetpackcomposepokedex.network.models
 
 import com.plcoding.jetpackcomposepokedex.domain.model.PokemonDomainModel
 import com.plcoding.jetpackcomposepokedex.domain.util.DomainMapperTo
-import com.plcoding.jetpackcomposepokedex.domain.util.DomainMapperToImpl
-import com.plcoding.jetpackcomposepokedex.network.remote.responses.Pokemon
+import com.plcoding.jetpackcomposepokedex.network.remote.responsestoplevel.Pokemon
 
 
 class PokemonDtoMapper  : DomainMapperTo<Pokemon, PokemonDomainModel> {

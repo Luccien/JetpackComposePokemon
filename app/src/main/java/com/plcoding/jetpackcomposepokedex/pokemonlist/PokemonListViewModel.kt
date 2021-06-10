@@ -25,7 +25,9 @@ class PokemonListViewModel @Inject constructor(
 
     private var curPage = 0
 
+    // pokemonList is used in  searchPokemonList(query: String)      and in loadPokemonPaginated() // a searchQuery will just querry already loaded pokemonListEntries
     var pokemonList = mutableStateOf<List<PokedexListEntryDto>>(listOf())
+
     var loadError = mutableStateOf("")
     var isLoading = mutableStateOf(false)
     var endReached = mutableStateOf(false)
@@ -66,7 +68,7 @@ class PokemonListViewModel @Inject constructor(
 
     fun loadPokemonPaginated() {
         viewModelScope.launch {
-            isLoading.value = true
+            isLoading.value = true 
             val result = repository.getPokemonList(PAGE_SIZE, curPage * PAGE_SIZE)
             when(result) {
                 is Resource.Success -> {

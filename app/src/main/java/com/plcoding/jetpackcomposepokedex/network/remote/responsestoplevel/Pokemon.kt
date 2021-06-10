@@ -1,7 +1,8 @@
-package com.plcoding.jetpackcomposepokedex.network.remote.responses
+package com.plcoding.jetpackcomposepokedex.network.remote.responsestoplevel
 
 
 import com.google.gson.annotations.SerializedName
+import com.plcoding.jetpackcomposepokedex.network.remote.responses.*
 
 data class Pokemon(
     val abilities: List<Ability>,
@@ -25,7 +26,7 @@ data class Pokemon(
     val pastTypes: List<Any>,
     val species: Species,
     val sprites: Sprites,
-   val stats: List<Stat>,
+    val stats: List<Stat>,
     val types: List<Type>,
     val weight: Int
 )

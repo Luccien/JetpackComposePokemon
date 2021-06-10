@@ -7,20 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.plcoding.jetpackcomposepokedex.domain.model.PokemonDomainModel
 import com.plcoding.jetpackcomposepokedex.interactors.pokemon.GetPokemon
-import com.plcoding.jetpackcomposepokedex.network.remote.responses.Animated
-import com.plcoding.jetpackcomposepokedex.network.remote.responses.BlackWhite
-import com.plcoding.jetpackcomposepokedex.network.remote.responses.Pokemon
-import com.plcoding.jetpackcomposepokedex.repository.PokemonRepository
 import com.plcoding.jetpackcomposepokedex.util.Constants.TAG
-import com.plcoding.jetpackcomposepokedex.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-import com.plcoding.jetpackcomposepokedex.network.remote.responses.*
-
 
 
 @HiltViewModel
