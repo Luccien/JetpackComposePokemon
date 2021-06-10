@@ -2,13 +2,13 @@ package com.plcoding.jetpackcomposepokedex.network.models
 
 import com.plcoding.jetpackcomposepokedex.domain.model.PokemonDomainModel
 import com.plcoding.jetpackcomposepokedex.domain.util.DomainMapperTo
-import com.plcoding.jetpackcomposepokedex.network.remote.responsestoplevel.Pokemon
+import com.plcoding.jetpackcomposepokedex.network.remote.responsestoplevel.PokemonDto
 
 
-class PokemonDtoMapper  : DomainMapperTo<Pokemon, PokemonDomainModel> {
+class PokemonDtoMapper  : DomainMapperTo<PokemonDto, PokemonDomainModel> {
 
 
-    override fun mapToDomainModel(model: Pokemon): PokemonDomainModel {
+    override fun mapToDomainModel(model: PokemonDto): PokemonDomainModel {
         return PokemonDomainModel(
             id = model.id,
             name = model.name,
@@ -20,7 +20,7 @@ class PokemonDtoMapper  : DomainMapperTo<Pokemon, PokemonDomainModel> {
         )
     }
 
-    fun toDomainList(initial: List<Pokemon>): List<PokemonDomainModel>{
+    fun toDomainList(initial: List<PokemonDto>): List<PokemonDomainModel>{
         return initial.map { mapToDomainModel(it) }
     }
 

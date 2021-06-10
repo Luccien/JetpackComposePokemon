@@ -1,7 +1,7 @@
 package com.plcoding.jetpackcomposepokedex.repository
 
 import com.plcoding.jetpackcomposepokedex.network.remote.PokeApi
-import com.plcoding.jetpackcomposepokedex.network.remote.responsestoplevel.Pokemon
+import com.plcoding.jetpackcomposepokedex.network.remote.responsestoplevel.PokemonDto
 import com.plcoding.jetpackcomposepokedex.network.remote.responses.PokemonList
 import com.plcoding.jetpackcomposepokedex.util.Resource
 import dagger.hilt.android.scopes.ActivityScoped
@@ -21,7 +21,7 @@ class PokemonRepository @Inject constructor(
         return Resource.Success(response)
     }
 
-    suspend fun getPokemonInfo(pokemonName: String): Resource<Pokemon> {
+    suspend fun getPokemonInfo(pokemonName: String): Resource<PokemonDto> {
         val response = try {
             api.getPokemonInfo(pokemonName)
         } catch(e: Exception) {

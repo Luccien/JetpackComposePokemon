@@ -1,6 +1,6 @@
 package com.plcoding.jetpackcomposepokedex.network.remote
 
-import com.plcoding.jetpackcomposepokedex.network.remote.responsestoplevel.Pokemon
+import com.plcoding.jetpackcomposepokedex.network.remote.responsestoplevel.PokemonDto
 import com.plcoding.jetpackcomposepokedex.network.remote.responses.PokemonList
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -17,5 +17,5 @@ interface PokeApi {
     @GET("pokemon/{name}")
     suspend fun getPokemonInfo(
         @Path("name") name: String
-    ): Pokemon
+    ): PokemonDto
 }

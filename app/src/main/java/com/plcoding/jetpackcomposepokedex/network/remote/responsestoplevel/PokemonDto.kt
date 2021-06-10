@@ -4,7 +4,7 @@ package com.plcoding.jetpackcomposepokedex.network.remote.responsestoplevel
 import com.google.gson.annotations.SerializedName
 import com.plcoding.jetpackcomposepokedex.network.remote.responses.*
 
-data class Pokemon(
+data class PokemonDto(
     val abilities: List<Ability>,
     @SerializedName("base_experience")
     val baseExperience: Int,
