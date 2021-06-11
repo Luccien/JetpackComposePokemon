@@ -4,6 +4,7 @@ import com.plcoding.jetpackcomposepokedex.cache.PokemonDao
 import com.plcoding.jetpackcomposepokedex.cache.database.AppDatabase
 import com.plcoding.jetpackcomposepokedex.cache.model.PokemonEntityMapper
 import com.plcoding.jetpackcomposepokedex.interactors.pokemon.GetPokemon
+import com.plcoding.jetpackcomposepokedex.interactors.pokemon.GetPokemonListEntries
 import com.plcoding.jetpackcomposepokedex.network.models.PokemonDtoMapper
 import com.plcoding.jetpackcomposepokedex.network.remote.PokeApi
 import dagger.Module
@@ -31,4 +32,17 @@ object InteractorsModule {
             pokemonDtoMapper = pokemonDtoMapper,
         )
     }
+
+
+    @ViewModelScoped
+    @Provides
+    fun provideGetPokemonListEntries(
+        pokeApi: PokeApi,
+    ): GetPokemonListEntries {
+        return GetPokemonListEntries(
+            pokeApi = pokeApi
+        )
+    }
+
+
 }
