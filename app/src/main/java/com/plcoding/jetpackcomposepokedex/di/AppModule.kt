@@ -2,10 +2,7 @@ package com.plcoding.jetpackcomposepokedex.di
 
 import android.content.Context
 import com.plcoding.jetpackcomposepokedex.PokedexApplication
-import com.plcoding.jetpackcomposepokedex.network.models.PokemonDtoMapper
-import com.plcoding.jetpackcomposepokedex.network.remote.PokeApi
-import com.plcoding.jetpackcomposepokedex.repository.PokemonRepository
-import com.plcoding.jetpackcomposepokedex.util.Constants.BASE_URL
+
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

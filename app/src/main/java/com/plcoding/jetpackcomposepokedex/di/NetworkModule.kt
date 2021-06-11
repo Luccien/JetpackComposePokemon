@@ -2,7 +2,6 @@ package com.plcoding.jetpackcomposepokedex.di
 
 import com.plcoding.jetpackcomposepokedex.network.models.PokemonDtoMapper
 import com.plcoding.jetpackcomposepokedex.network.remote.PokeApi
-import com.plcoding.jetpackcomposepokedex.repository.PokemonRepository
 import com.plcoding.jetpackcomposepokedex.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -25,12 +24,7 @@ object NetworkModule {
         return PokemonDtoMapper()
     }
 
-    // TODO remove it later with the repository
-    @Singleton
-    @Provides
-    fun providePokemonRepository(
-        api: PokeApi
-    ) = PokemonRepository(api)
+
 
     @Singleton
     @Provides
