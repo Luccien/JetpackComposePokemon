@@ -34,6 +34,7 @@ import androidx.navigation.compose.navigate
 import coil.request.ImageRequest
 import com.google.accompanist.coil.CoilImage
 import com.plcoding.jetpackcomposepokedex.R
+import com.plcoding.jetpackcomposepokedex.domain.model.PokedexListEntryDomainModel
 import com.plcoding.jetpackcomposepokedex.network.models.PokedexListEntryDto
 import com.plcoding.jetpackcomposepokedex.ui.theme.RobotoCondensed
 
@@ -135,7 +136,7 @@ fun PokemonList(
                     viewModel.loadPokemonPaginated()
                 }
             }
-            PokedexRow(rowIndex = it, entryDtos = pokemonList, navController = navController)
+            PokedexRow(rowIndex = it, entryDomainModels = pokemonList, navController = navController)
         }
     }
 
@@ -157,7 +158,7 @@ fun PokemonList(
 
 @Composable
 fun PokedexEntry(
-    entryDto: PokedexListEntryDto,
+    entryDomainModel: PokedexListEntryDomainModel,
     navController: NavController,
     modifier: Modifier = Modifier,
     viewModel: PokemonListViewModel = hiltNavGraphViewModel()
@@ -185,21 +186,21 @@ fun PokedexEntry(
                 navController.navigate(
 
                     //"pokemon_saved_favorites_screen/${dominantColor.toArgb()}/${entry.pokemonName}"
-                    "pokemon_detail_screen/${dominantColor.toArgb()}/${entryDto.pokemonName}"
+                    "pokemon_detail_screen/${dominantColor.toArgb()}/${entryDomainModel.pokemonName}"
                 )
             }
     ) {
         Column {
             CoilImage(
                 request = ImageRequest.Builder(LocalContext.current)
-                    .data(entryDto.imageUrl)
+                    .data(entryDomainModel.imageUrl)
                     .target {
                         viewModel.calcDominantColor(it) { color ->
                             dominantColor = color
                         }
                     }
                     .build(),
-                contentDescription = entryDto.pokemonName,
+                contentDescription = entryDomainModel.pokemonName,
                 fadeIn = true,
                 modifier = Modifier
                     .size(120.dp)
@@ -211,7 +212,7 @@ fun PokedexEntry(
                 )
             }
             Text(
-                text = entryDto.pokemonName,
+                text = entryDomainModel.pokemonName,
                 fontFamily = RobotoCondensed,
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
@@ -224,20 +225,20 @@ fun PokedexEntry(
 @Composable
 fun PokedexRow(
     rowIndex: Int,
-    entryDtos: List<PokedexListEntryDto>,
+    entryDomainModels: List<PokedexListEntryDomainModel>,
     navController: NavController
 ) {
     Column {
         Row {
             PokedexEntry(
-                entryDto = entryDtos[rowIndex * 2],
+                entryDomainModel = entryDomainModels[rowIndex * 2],
                 navController = navController,
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.width(16.dp))
-            if(entryDtos.size >= rowIndex * 2 + 2) {
+            if(entryDomainModels.size >= rowIndex * 2 + 2) {
                 PokedexEntry(
-                    entryDto = entryDtos[rowIndex * 2 + 1],
+                    entryDomainModel = entryDomainModels[rowIndex * 2 + 1],
                     navController = navController,
                     modifier = Modifier.weight(1f)
                 )

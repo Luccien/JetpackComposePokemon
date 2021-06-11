@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PokemonDetailViewModel @Inject constructor(
-    private val getPokemon: GetPokemon,
+    private val getPokemon: GetPokemon
 ) : ViewModel() {
 
 
