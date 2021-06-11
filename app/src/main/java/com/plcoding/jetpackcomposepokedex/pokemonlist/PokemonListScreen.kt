@@ -35,7 +35,6 @@ import coil.request.ImageRequest
 import com.google.accompanist.coil.CoilImage
 import com.plcoding.jetpackcomposepokedex.R
 import com.plcoding.jetpackcomposepokedex.domain.model.PokedexListEntryDomainModel
-import com.plcoding.jetpackcomposepokedex.network.models.PokedexListEntryDto
 import com.plcoding.jetpackcomposepokedex.ui.theme.RobotoCondensed
 
 @Composable

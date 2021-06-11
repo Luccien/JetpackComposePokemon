@@ -41,7 +41,6 @@ class PokemonDetailViewModel @Inject constructor(
 
                 loading.value = dataState.loading
 
-
                 dataState.data?.let { data ->
                     pokemon.value = data
                 }

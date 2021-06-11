@@ -3,10 +3,6 @@ package com.plcoding.jetpackcomposepokedex.interactors.pokemon
 
 import com.plcoding.jetpackcomposepokedex.domain.data.DataState
 import com.plcoding.jetpackcomposepokedex.domain.model.PokedexListEntryDomainModel
-import com.plcoding.jetpackcomposepokedex.domain.model.PokemonDomainModel
-import com.plcoding.jetpackcomposepokedex.network.models.PokedexListEntryDto
-import com.plcoding.jetpackcomposepokedex.network.models.PokedexListEntryDtoMapper
-import com.plcoding.jetpackcomposepokedex.network.models.PokemonDtoMapper
 import com.plcoding.jetpackcomposepokedex.network.remote.PokeApi
 import com.plcoding.jetpackcomposepokedex.network.remote.responsestoplevel.PokemonListResponse
 import kotlinx.coroutines.delay

@@ -11,11 +11,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
 import com.plcoding.jetpackcomposepokedex.domain.model.PokedexListEntryDomainModel
 import com.plcoding.jetpackcomposepokedex.interactors.pokemon.GetPokemonListEntries
-import com.plcoding.jetpackcomposepokedex.network.models.PokedexListEntryDto
-import com.plcoding.jetpackcomposepokedex.repository.PokemonRepository
 import com.plcoding.jetpackcomposepokedex.util.Constants
 import com.plcoding.jetpackcomposepokedex.util.Constants.PAGE_SIZE
-import com.plcoding.jetpackcomposepokedex.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
@@ -111,38 +108,6 @@ class PokemonListViewModel @Inject constructor(
     }
 
 
-    ////////////////////
-    /*
-    fun loadPokemonPaginatedOOOO() {
-        viewModelScope.launch {
-            isLoading.value = true 
-            val result = repository.getPokemonList(PAGE_SIZE, curPage * PAGE_SIZE)
-            when(result) {
-                is Resource.Success -> {
-                    endReached.value = curPage * PAGE_SIZE >= result.data!!.count
-                    val pokedexEntries = result.data.results.mapIndexed { index, entry ->
-                        val number = if(entry.url.endsWith("/")) {
-                            entry.url.dropLast(1).takeLastWhile { it.isDigit() }
-                        } else {
-                            entry.url.takeLastWhile { it.isDigit() }
-                        }
-                        val url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.png"
-                        PokedexListEntryDto(entry.name.capitalize(Locale.ROOT), url, number.toInt())
-                    }
-                    curPage++
-
-                    loadError.value = ""
-                    isLoading.value = false
-                    pokemonList.value += pokedexEntries
-                }
-                is Resource.Error -> {
-                    loadError.value = result.message!!
-                    isLoading.value = false
-                }
-            }
-        }
-    }
-*/
 
 
 
