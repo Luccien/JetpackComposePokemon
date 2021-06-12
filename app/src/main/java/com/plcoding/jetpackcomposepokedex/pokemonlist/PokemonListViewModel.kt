@@ -40,7 +40,7 @@ class PokemonListViewModel @Inject constructor(
     var isSearching = mutableStateOf(false)
 
     init {
-        loadPokemonPaginated()
+        loadPokemonPaginated(true)
     }
 
     fun searchPokemonList(query: String) {
@@ -75,18 +75,18 @@ class PokemonListViewModel @Inject constructor(
 
 
 
-    fun loadPokemonPaginated() {
-        onTriggerEvent()
+    fun loadPokemonPaginated(onAppStart:Boolean = false) {
+        onTriggerEvent(onAppStart)
     }
-    fun onTriggerEvent() {
+    fun onTriggerEvent(onAppStart:Boolean = false) {
         viewModelScope.launch {
-            getPokemonListEntries()
+            getPokemonListEntries(onAppStart)
         }
     }
 
-    private fun getPokemonListEntries(){
+    private fun getPokemonListEntries(onAppStart:Boolean = false){
        // isLoading.value = true // old loading state
-        getPokemonListEntries.execute(PAGE_SIZE, curPage * PAGE_SIZE).onEach{ dataState ->
+        getPokemonListEntries.execute(onAppStart,pokemonList.value,PAGE_SIZE, curPage * PAGE_SIZE).onEach{ dataState ->
 
             isLoading.value = dataState.loading // new loading state
 
@@ -95,7 +95,9 @@ class PokemonListViewModel @Inject constructor(
                 curPage++
                 loadError.value = ""
                 isLoading.value = false
-                pokemonList.value += data
+
+                // changed --> list will now be retrieved from db as complete list  // old version was to add only newly retrieved data  //pokemonList.value += data
+                pokemonList.value = data
             }
 
             dataState.error?.let { error ->

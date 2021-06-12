@@ -1,7 +1,9 @@
 package com.plcoding.jetpackcomposepokedex.di
 
+import com.plcoding.jetpackcomposepokedex.cache.PokedexListEntryDao
 import com.plcoding.jetpackcomposepokedex.cache.PokemonDao
 import com.plcoding.jetpackcomposepokedex.cache.database.AppDatabase
+import com.plcoding.jetpackcomposepokedex.cache.model.PokedexListEntryEntityMapper
 import com.plcoding.jetpackcomposepokedex.cache.model.PokemonEntityMapper
 import com.plcoding.jetpackcomposepokedex.interactors.pokemon.GetPokemon
 import com.plcoding.jetpackcomposepokedex.interactors.pokemon.GetPokemonListEntries
@@ -38,11 +40,18 @@ object InteractorsModule {
     @Provides
     fun provideGetPokemonListEntries(
         pokeApi: PokeApi,
+        pokedexListEntryEntityMapper: PokedexListEntryEntityMapper,
+        pokedexListEntryDao: PokedexListEntryDao
     ): GetPokemonListEntries {
         return GetPokemonListEntries(
-            pokeApi = pokeApi
+            pokeApi = pokeApi,
+            pokedexListEntryEntityMapper =pokedexListEntryEntityMapper,
+            pokedexListEntryDao = pokedexListEntryDao
         )
     }
+
+
+
 
 
 }

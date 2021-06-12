@@ -25,8 +25,8 @@ class GetPokemon (
         try {
             emit(DataState.loading())
 
-            // just to show loading, cache is fast
-            delay(1000)
+
+            //delay(1000)
 
 
             var pokemon = getPokemonFromCache(pokemonName = pokemonName)
@@ -57,7 +57,7 @@ class GetPokemon (
                 emit(DataState.success(pokemon))
             }
             else{
-                throw Exception("Unable to get recipe from the cache.")
+                throw Exception("Unable to get Pokemon from the cache.")
             }
 
 
@@ -72,7 +72,7 @@ class GetPokemon (
 
 
     private suspend fun getPokemonFromCache(pokemonName: String): PokemonDomainModel? {
-        return pokemonDao.getPokemonByName(pokemonName)?.let { pokemonEntity ->
+        return pokemonDao.getPokemonByName(pokemonName)?.let {  pokemonEntity ->
             entityMapper.mapToDomainModel(pokemonEntity)
         }
     }
