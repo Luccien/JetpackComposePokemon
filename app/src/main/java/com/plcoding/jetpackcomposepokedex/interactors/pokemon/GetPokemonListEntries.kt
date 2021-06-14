@@ -22,10 +22,6 @@ class GetPokemonListEntries(
     )
 {
 
-
-
-
-
     fun execute(
         onAppStart:Boolean = false,
         pokemonList:List<PokedexListEntryDomainModel>,
@@ -38,18 +34,18 @@ class GetPokemonListEntries(
 
             //delay(1000)
 
-            var cachePokedexEntries:List<PokedexListEntryDomainModel> = listOf<PokedexListEntryDomainModel>()
+            var pokedexEntries:List<PokedexListEntryDomainModel> = listOf<PokedexListEntryDomainModel>()
 
             // onAppStart is only true   when this is called  from the viewModel Init -
             // only on app start it will be checked if something is in the db - all other calls will be when pages data from the db has ended - so it will continue loading and saving
             if(onAppStart){
-                cachePokedexEntries = getPokedexEntriesFromCache()
+                pokedexEntries = getPokedexEntriesFromCache()
             }
 
 
-            // cachePokedexEntries will either be null when  1)) onAppStart = false 2)) or database is empty (which only happens when app is started or dbschema change for the very first time)
-            if(cachePokedexEntries.isNotEmpty()){
-                emit(DataState.success(cachePokedexEntries))
+            // pokedexEntries will either be null when  1)) onAppStart = false 2)) or database is empty (which only happens when app is started or dbschema change for the very first time)
+            if(pokedexEntries.isNotEmpty()){
+                emit(DataState.success(pokedexEntries))
             }
             else {
                 val networkPokemonListResponse:PokemonListResponse = getPokemonListResponseFromNetwork(limit,offset)
@@ -75,18 +71,22 @@ class GetPokemonListEntries(
                     // map domain -> entity
                     pokedexListEntryEntityMapper.toEntityList(completeList)
                 )
+/////////
+                pokedexEntries = getPokedexEntriesFromCache()
+
+                // emit and finish
+                if(pokedexEntries != null){
+                    emit(DataState.success(pokedexEntries))
+                }
+                else{
+                    throw Exception("Unable to get pokemonList from the cache.")
+                }
+
+        //////
 
             }
+////////
 
-            val pokedexEntries = getPokedexEntriesFromCache()
-
-            // emit and finish
-            if(pokedexEntries != null){
-                emit(DataState.success(pokedexEntries))
-            }
-            else{
-                throw Exception("Unable to get pokemonList from the cache.")
-            }
         }
 
         catch (e: Exception)
