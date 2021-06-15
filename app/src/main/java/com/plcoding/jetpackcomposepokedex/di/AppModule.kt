@@ -1,15 +1,13 @@
 package com.plcoding.jetpackcomposepokedex.di
 
 import android.content.Context
-import com.plcoding.jetpackcomposepokedex.PokedexApplication
+import com.plcoding.jetpackcomposepokedex.presentation.PokedexApplication
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module

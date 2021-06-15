@@ -1,7 +1,7 @@
 package com.plcoding.jetpackcomposepokedex.di
 
 import androidx.room.Room
-import com.plcoding.jetpackcomposepokedex.PokedexApplication
+import com.plcoding.jetpackcomposepokedex.presentation.PokedexApplication
 import com.plcoding.jetpackcomposepokedex.cache.PokedexListEntryDao
 import com.plcoding.jetpackcomposepokedex.cache.PokemonDao
 import com.plcoding.jetpackcomposepokedex.cache.database.AppDatabase

@@ -1,4 +1,4 @@
-package com.plcoding.jetpackcomposepokedex.pokemonlist
+package com.plcoding.jetpackcomposepokedex.presentation.ui.pokemon_list
 
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable

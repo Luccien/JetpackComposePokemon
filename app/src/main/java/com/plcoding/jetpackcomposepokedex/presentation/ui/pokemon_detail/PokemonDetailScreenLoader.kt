@@ -1,4 +1,4 @@
-package com.plcoding.jetpackcomposepokedex.pokemondetail
+package com.plcoding.jetpackcomposepokedex.presentation.ui.pokemon_detail
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +9,6 @@ import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.NavController
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
-import java.util.*
 
 @Composable
 fun PokemonDetailScreenLoader(

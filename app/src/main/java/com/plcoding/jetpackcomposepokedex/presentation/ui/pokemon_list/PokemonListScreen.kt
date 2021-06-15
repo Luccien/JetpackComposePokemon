@@ -1,4 +1,4 @@
-package com.plcoding.jetpackcomposepokedex.pokemonlist
+package com.plcoding.jetpackcomposepokedex.presentation.ui.pokemon_list
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

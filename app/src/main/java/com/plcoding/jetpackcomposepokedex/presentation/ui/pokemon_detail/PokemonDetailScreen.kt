@@ -1,4 +1,4 @@
-package com.plcoding.jetpackcomposepokedex.pokemondetail
+package com.plcoding.jetpackcomposepokedex.presentation.ui.pokemon_detail
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween

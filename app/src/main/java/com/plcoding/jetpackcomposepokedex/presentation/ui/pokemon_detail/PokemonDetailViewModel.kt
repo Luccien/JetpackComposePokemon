@@ -1,4 +1,4 @@
-package com.plcoding.jetpackcomposepokedex.pokemondetail
+package com.plcoding.jetpackcomposepokedex.presentation.ui.pokemon_detail
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
