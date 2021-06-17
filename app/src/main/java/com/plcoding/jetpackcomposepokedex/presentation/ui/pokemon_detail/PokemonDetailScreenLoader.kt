@@ -42,20 +42,21 @@ if (pokemonName == null){
         )
     }
     else if(!loading && pokemonDM == null && onLoad){
-        TODO("Show Invalid Recipe")
+        TODO("Show Invalid Pokemon")
     }
     else {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-                PokemonDetailScreen(
-                    dominantColor = dominantColor,
-                    pokemonDM = pokemonDM,
-                    navController = navController
-                )
-            }
-
+            PokemonDetailScreen(
+                dominantColor = dominantColor,
+                pokemonDM = pokemonDM,
+                navController = navController
+            )
         }
+
+    }
+
 
 
     }

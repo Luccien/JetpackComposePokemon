@@ -12,12 +12,29 @@ import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.plcoding.jetpackcomposepokedex.presentation.ui.pokemon_detail.PokemonDetailScreenLoader
 import com.plcoding.jetpackcomposepokedex.presentation.ui.pokemon_list.PokemonListScreen
+import com.plcoding.jetpackcomposepokedex.presentation.util.ConnectivityManager
 import com.plcoding.jetpackcomposepokedex.ui.theme.JetpackComposePokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+
+    @Inject
+    lateinit var connectivityManager: ConnectivityManager
+
+
+    override fun onStart() {
+        super.onStart()
+        connectivityManager.registerConnectionObserver(this)
+    }
+
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

@@ -33,7 +33,7 @@ class PokemonListViewModel @Inject constructor(
 
     var loadError = mutableStateOf("")
     var isLoading = mutableStateOf(false)
-    var endReached = mutableStateOf(false)
+    var endReached = mutableStateOf(false) // TODO check its not used -> not switched to true
 
     private var cachedPokemonList = listOf<PokedexListEntryDomainModel>()
     private var isSearchStarting = true

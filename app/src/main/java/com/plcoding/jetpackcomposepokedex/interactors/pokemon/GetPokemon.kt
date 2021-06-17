@@ -10,6 +10,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
+/*
+TODO Further investigation needed :
+ Avoiding Crashes:
+ A crash which occures when user is loading content a pokemon for the first time but he does not have a internetconnection.
+ Within a try and catch blog whitin a flow (GetPokemon.kt ) I throw an error-> which leads to the flow beeing cancelled and in
+ this case the app beeing crashed
+  Further info about it: https://medium.com/@chibatching/avoiding-to-crash-caused-by-misunderstanding-kotlin-coroutine-scope-b38ff5cbef20
+ */
 class GetPokemon (
     private val pokemonDao: PokemonDao,
     private val entityMapper: PokemonEntityMapper,
@@ -19,54 +27,62 @@ class GetPokemon (
 
 
     fun execute(
-        pokemonName: String
+        pokemonName: String,
+        isNetworkAvailable: Boolean
     ): Flow<DataState<PokemonDomainModel>> = flow {
 
         try {
             emit(DataState.loading())
-
-
-            //delay(1000)
-
 
             var pokemon = getPokemonFromCache(pokemonName = pokemonName)
 
             if(pokemon != null){
                 emit(DataState.success(pokemon))
             }
-            else{
-                val networkPokemon = getPokemonFromNetwork(pokemonName) // dto -> domain
+            else {
+                if (isNetworkAvailable) {
+                    val networkPokemon = getPokemonFromNetwork(pokemonName) // dto -> domain
 
 
-                // insert into cache
-                pokemonDao.insertPokemon(
-                    // map domain -> entity
-                    entityMapper.mapFromDomainModel(networkPokemon)
-                )
+                    // insert into cache
+                    pokemonDao.insertPokemon(
+                        // map domain -> entity
+                        entityMapper.mapFromDomainModel(networkPokemon)
+                    )
+                }
 
+
+
+                // 1 get from cache // trying to get it again from cache (as in beginning of this try block ) ...
+                // 2 even if   isNetworkAvailable=false (will be called twice) --> reason is to keep it consistent
+                // 3 ( single source of truth (SSOT) )--> same call does not matter what happend before and how data was retrieved(1.network or 2. cache or 3.both sources doesnot work and there is no data)
+                pokemon = getPokemonFromCache(pokemonName = pokemonName)
+                /// ---
+
+                // emit and finish
+                if (pokemon != null) {
+                    emit(DataState.success(pokemon))
+                } else {
+
+                    // TODO find out how to emit here an DataState.error  without crashing when executed ( will capture when networking is off as in catch blog and also when database is not working properly)
+                    // DO NOT USE HERE // Exeptions if executed here will stop the flow and crash the app: checkout by turning internetconnection off
+                    // 1. emit(DataState.error("Unable to get Pokemon from the cache.")) // in this case emit can also crash the app  (it will most likely be an network error which will be captured in the catch blog where it does not crash)
+                    //2. emit(DataState.error<PokemonDomainModel>("Unable to get Pokemon from the cache."))
+                    //3.  throw Exception("Unable to get Pokemon from the cache.")
+
+
+                }
             }
-
-
-
-
-            // get from cache
-            pokemon = getPokemonFromCache(pokemonName = pokemonName)
-
-            // emit and finish
-            if(pokemon != null){
-                emit(DataState.success(pokemon))
-            }
-            else{
-                throw Exception("Unable to get Pokemon from the cache.")
-            }
-
 
 
         }
 
      catch (e: Exception)
     {
-        emit(DataState.error<PokemonDomainModel>(e.message ?: "Unknown Error"))
+
+         // TODO
+        // emit(DataState.error<PokemonDomainModel>(e.message ?: "Unknown Error")) // works (will most likely tell that networking is switched off) --> does NOT crash?? NOT SURE
+        //throw Exception("Unable to get Pokemon: network not available") // DO NOT USE HERE // Exeptions if executed here will stop the flow and crash the app: checkout by turning internetconnection off
     }
 }
 
