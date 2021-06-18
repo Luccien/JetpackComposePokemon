@@ -34,17 +34,16 @@ if (pokemonName == null){
     val loading = viewModel.loading.value
     val pokemonDM = viewModel.pokemon.value
 
-
     if (loading && pokemonDM == null) {
-        CircularProgressIndicator(
+         CircularProgressIndicator(
             color = MaterialTheme.colors.primary,
             modifier = Modifier
         )
-    }
-    else if(!loading && pokemonDM == null && onLoad){
-        TODO("Show Invalid Pokemon")
-    }
-    else {
+
+    } else if (!loading && pokemonDM == null && onLoad) {
+        // TODO show invalid pokemon
+
+    } else if(pokemonDM != null){
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -54,7 +53,6 @@ if (pokemonName == null){
                 navController = navController
             )
         }
-
     }
 
 

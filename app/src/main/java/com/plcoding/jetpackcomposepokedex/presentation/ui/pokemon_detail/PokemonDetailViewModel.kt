@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.plcoding.jetpackcomposepokedex.domain.model.PokemonDomainModel
 import com.plcoding.jetpackcomposepokedex.interactors.pokemon.GetPokemon
+import com.plcoding.jetpackcomposepokedex.network.remote.responses.Sprites
 import com.plcoding.jetpackcomposepokedex.presentation.util.ConnectivityManager
 import com.plcoding.jetpackcomposepokedex.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,7 +39,6 @@ class PokemonDetailViewModel @Inject constructor(
     }
 
      private fun getPokemon(pokemonName: String){
-
             getPokemon.execute(pokemonName,connectivityManager.isNetworkAvailable.value).onEach{ dataState ->
 
                 loading.value = dataState.loading
@@ -48,7 +48,8 @@ class PokemonDetailViewModel @Inject constructor(
                 }
 
                 dataState.error?.let { error ->
-                    Log.e(TAG, "getPokemon: ${error}")
+                    //Log.e(TAG, "getPokemon: ${error}")
+                    //pokemon.value = PokemonDomainModel(100,"testname",100, Sprites())
                 }
 
             }.launchIn(viewModelScope)

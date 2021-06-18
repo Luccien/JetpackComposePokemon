@@ -11,12 +11,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 /*
-TODO Further investigation needed :
  Avoiding Crashes:
- A crash which occures when user is loading content a pokemon for the first time but he does not have a internetconnection.
- Within a try and catch blog whitin a flow (GetPokemon.kt ) I throw an error-> which leads to the flow beeing cancelled and in
+ A crash which occures when user is loading content: a pokemon for the first time but he does not have a internetconnection.
+ Within a try and catch blog whitin a flow (GetPokemon.kt )  throw Exeption() -> which leads to the flow beeing cancelled and in
  this case the app beeing crashed
   Further info about it: https://medium.com/@chibatching/avoiding-to-crash-caused-by-misunderstanding-kotlin-coroutine-scope-b38ff5cbef20
+    SOLUTION/FIX --> Here just emit(DataState.error("message")) will work to inform the user what is wrong // throw Exception("message") causing the crash is not not necessary
  */
 class GetPokemon (
     private val pokemonDao: PokemonDao,
@@ -64,11 +64,11 @@ class GetPokemon (
                     emit(DataState.success(pokemon))
                 } else {
 
-                    // TODO find out how to emit here an DataState.error  without crashing when executed ( will capture when networking is off as in catch blog and also when database is not working properly)
+                    //( will capture when networking is off as in catch blog and also when local database is not working properly)
+                    emit(DataState.error<PokemonDomainModel>("Unable to get Pokemon from the cache."))
+
                     // DO NOT USE HERE // Exeptions if executed here will stop the flow and crash the app: checkout by turning internetconnection off
-                    // 1. emit(DataState.error("Unable to get Pokemon from the cache.")) // in this case emit can also crash the app  (it will most likely be an network error which will be captured in the catch blog where it does not crash)
-                    //2. emit(DataState.error<PokemonDomainModel>("Unable to get Pokemon from the cache."))
-                    //3.  throw Exception("Unable to get Pokemon from the cache.")
+                    //  throw Exception("Unable to get Pokemon from the cache.")
 
 
                 }
@@ -80,8 +80,8 @@ class GetPokemon (
      catch (e: Exception)
     {
 
-         // TODO
-        // emit(DataState.error<PokemonDomainModel>(e.message ?: "Unknown Error")) // works (will most likely tell that networking is switched off) --> does NOT crash?? NOT SURE
+
+        emit(DataState.error<PokemonDomainModel>(e.message ?: "Unknown Error")) // (will most likely tell that networking is switched off)
         //throw Exception("Unable to get Pokemon: network not available") // DO NOT USE HERE // Exeptions if executed here will stop the flow and crash the app: checkout by turning internetconnection off
     }
 }
