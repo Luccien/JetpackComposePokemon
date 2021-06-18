@@ -9,6 +9,7 @@ import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.NavController
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
+import com.plcoding.jetpackcomposepokedex.presentation.components.NothingHere
 
 @Composable
 fun PokemonDetailScreenLoader(
@@ -21,7 +22,8 @@ fun PokemonDetailScreenLoader(
 
 
 if (pokemonName == null){
-  // TODO show invalid pokemon
+    NothingHere()
+
 }else {
 
     // fire a one-off event to get the pokemon from api
@@ -41,7 +43,8 @@ if (pokemonName == null){
         )
 
     } else if (!loading && pokemonDM == null && onLoad) {
-        // TODO show invalid pokemon
+        NothingHere()
+    //  can happen when network is not available or local database broken/unavailable
 
     } else if(pokemonDM != null){
         Box(

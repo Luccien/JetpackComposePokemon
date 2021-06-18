@@ -49,7 +49,7 @@ class PokemonDetailViewModel @Inject constructor(
 
                 dataState.error?.let { error ->
                     //Log.e(TAG, "getPokemon: ${error}")
-                    //pokemon.value = PokemonDomainModel(100,"testname",100, Sprites())
+
                 }
 
             }.launchIn(viewModelScope)
