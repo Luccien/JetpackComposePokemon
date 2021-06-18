@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import com.plcoding.jetpackcomposepokedex.presentation.components.NothingHere
+import com.plcoding.jetpackcomposepokedex.presentation.components.ProcessDialogQueue
 
 @Composable
 fun PokemonDetailScreenLoader(
@@ -36,6 +37,10 @@ if (pokemonName == null){
     val loading = viewModel.loading.value
     val pokemonDM = viewModel.pokemon.value
 
+    val dialogQueue = viewModel.dialogQueue
+
+
+
     if (loading && pokemonDM == null) {
          CircularProgressIndicator(
             color = MaterialTheme.colors.primary,
@@ -44,6 +49,9 @@ if (pokemonName == null){
 
     } else if (!loading && pokemonDM == null && onLoad) { //  can happen when network is not available or local database broken/unavailable
         NothingHere()
+        ProcessDialogQueue(
+            dialogQueue = dialogQueue.queue.value
+        )
 
     } else if(pokemonDM != null){
         Box(

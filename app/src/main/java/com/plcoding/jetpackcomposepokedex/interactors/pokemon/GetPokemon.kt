@@ -62,14 +62,14 @@ class GetPokemon (
                 // emit and finish
                 if (pokemon != null) {
                     emit(DataState.success(pokemon))
-                } else {
+                }
+                else {
 
                     //( will capture when networking is off as in catch blog and also when local database is not working properly)
-                    emit(DataState.error<PokemonDomainModel>("Unable to get Pokemon from the cache."))
+                   emit(DataState.error<PokemonDomainModel>("Unable to get Pokemon from the cache/internet."))
 
                     // DO NOT USE HERE // Exeptions if executed here will stop the flow and crash the app: checkout by turning internetconnection off
                     //  throw Exception("Unable to get Pokemon from the cache.")
-
 
                 }
             }
@@ -79,8 +79,6 @@ class GetPokemon (
 
      catch (e: Exception)
     {
-
-
         emit(DataState.error<PokemonDomainModel>(e.message ?: "Unknown Error")) // (will most likely tell that networking is switched off)
         //throw Exception("Unable to get Pokemon: network not available") // DO NOT USE HERE // Exeptions if executed here will stop the flow and crash the app: checkout by turning internetconnection off
     }
