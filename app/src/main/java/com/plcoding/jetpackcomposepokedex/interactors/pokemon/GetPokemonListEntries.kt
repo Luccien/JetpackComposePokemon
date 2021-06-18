@@ -15,6 +15,16 @@ import kotlinx.coroutines.flow.flow
 import java.util.*
 
 
+/*
+ Avoiding Crashes:  (SAME AS in GetPokemon)
+ A crash which occures when user is loading content: a pokemon for the first time but he does not have a internetconnection.
+ Within a try and catch blog whitin a flow (GetPokemon.kt )  throw Exeption() -> which leads to the flow beeing cancelled and in
+ this case the app beeing crashed
+  Further info about it: https://medium.com/@chibatching/avoiding-to-crash-caused-by-misunderstanding-kotlin-coroutine-scope-b38ff5cbef20
+    SOLUTION/FIX --> Here just emit(DataState.error("message")) will work to inform the user what is wrong // throw Exception("message") causing the crash is not not necessary
+ */
+
+
 class GetPokemonListEntries(
     private val pokeApi: PokeApi,
     private val pokedexListEntryEntityMapper:PokedexListEntryEntityMapper,
@@ -26,13 +36,13 @@ class GetPokemonListEntries(
         onAppStart:Boolean = false,
         pokemonList:List<PokedexListEntryDomainModel>,
         limit: Int,
-        offset: Int
+        offset: Int,
+        isNetworkAvailable: Boolean
     ): Flow<DataState<List<PokedexListEntryDomainModel>>> = flow {
 
         try {
             emit(DataState.loading())
 
-            //delay(1000)
 
             var pokedexEntries:List<PokedexListEntryDomainModel> = listOf<PokedexListEntryDomainModel>()
 
@@ -48,50 +58,70 @@ class GetPokemonListEntries(
                 emit(DataState.success(pokedexEntries))
             }
             else {
-                val networkPokemonListResponse:PokemonListResponse = getPokemonListResponseFromNetwork(limit,offset)
+                if (isNetworkAvailable) {  // start network
 
-                val networkPokedexEntries: List<PokedexListEntryDomainModel> = networkPokemonListResponse.results.mapIndexed { index, entry ->
-                    val number = if(entry.url.endsWith("/")) {
-                        entry.url.dropLast(1).takeLastWhile { it.isDigit() }
-                    } else {
-                        entry.url.takeLastWhile { it.isDigit() }
-                    }
-                    val url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.png"
-                    PokedexListEntryDomainModel(entry.name.capitalize(Locale.ROOT), url, number.toInt())
+                    val networkPokemonListResponse: PokemonListResponse =
+                        getPokemonListResponseFromNetwork(limit, offset)
+
+                    val networkPokedexEntries: List<PokedexListEntryDomainModel> =
+                        networkPokemonListResponse.results.mapIndexed { index, entry ->
+                            val number = if (entry.url.endsWith("/")) {
+                                entry.url.dropLast(1).takeLastWhile { it.isDigit() }
+                            } else {
+                                entry.url.takeLastWhile { it.isDigit() }
+                            }
+                            val url =
+                                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.png"
+                            PokedexListEntryDomainModel(
+                                entry.name.capitalize(Locale.ROOT),
+                                url,
+                                number.toInt()
+                            )
+                        }
+
+
+                    // as it loads only paginated (e.g. pokemon from 10-20)  but for saving it needs the whole list  (pokemonList comes from viewmodel)
+                    // instead one could do an add operation on the database (than pokemonList would not be needed here)
+                    val completeList = pokemonList + networkPokedexEntries
+
+                    // insert into cache
+                    pokedexListEntryDao.insertPokemonList(
+                        // map domain -> entity
+                        pokedexListEntryEntityMapper.toEntityList(completeList)
+                    )
                 }
+                ///////// end network
 
 
-
-                // as it loads only paginated (e.g. pokemon from 10-20)  but for saving it needs the whole list  (pokemonList comes from viewmodel)
-                // instead one could do an add operation on the database (than pokemonList would not be needed here)
-                val completeList = pokemonList + networkPokedexEntries
-
-                // insert into cache
-                pokedexListEntryDao.insertPokemonList(
-                    // map domain -> entity
-                    pokedexListEntryEntityMapper.toEntityList(completeList)
-                )
-/////////
+                // 1 get from cache // trying to get it again from cache (as in beginning of this try block ) ...
+                // 2 even if   isNetworkAvailable=false (will be called twice) --> reason is to keep it consistent
+                // 3 ( single source of truth (SSOT) )--> same call does not matter what happend before and how data was retrieved(1.network or 2. cache or 3.both sources doesnot work and there is no data)
                 pokedexEntries = getPokedexEntriesFromCache()
 
                 // emit and finish
-                if(pokedexEntries != null){
+                if(pokedexEntries.isNotEmpty()){
+                //if(pokedexEntries != null){
                     emit(DataState.success(pokedexEntries))
                 }
                 else{
-                    throw Exception("Unable to get pokemonList from the cache.")
+                    //( will capture when networking is off as in catch blog and also when local database is not working properly)
+                    emit(DataState.error<List<PokedexListEntryDomainModel>>("Unable to get Pokemon List from the cache/internet."))
+
+                    // DO NOT USE HERE // Exeptions if executed here will stop the flow and crash the app: checkout by turning internetconnection off
+                    //  throw Exception("Unable to get pokemonList from the cache.")
+                    //throw Exception("Unable to get pokemonList from the cache.")
                 }
 
-        //////
 
             }
-////////
+
 
         }
 
         catch (e: Exception)
         {
-            emit(DataState.error<List<PokedexListEntryDomainModel>>(e.message ?: "Unknown Error"))
+            emit(DataState.error<List<PokedexListEntryDomainModel>>(e.message ?: "Unknown Error - loading list"))// (will most likely tell that networking is switched off)
+            //throw Exception("Unable to get Pokemon: network not available") // DO NOT USE HERE // Exeptions if executed here will stop the flow and crash the app: checkout by turning internetconnection off
         }
     }
 

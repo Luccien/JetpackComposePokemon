@@ -51,6 +51,7 @@ class PokemonDetailViewModel @Inject constructor(
                 dataState.error?.let { error ->
                     Log.e(TAG, "getPokemon: ${error}")
                     dialogQueue.appendErrorMessage("An Error Occurred", error)
+
                 }
 
             }.launchIn(viewModelScope)

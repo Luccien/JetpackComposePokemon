@@ -35,6 +35,8 @@ import coil.request.ImageRequest
 import com.google.accompanist.coil.CoilImage
 import com.plcoding.jetpackcomposepokedex.R
 import com.plcoding.jetpackcomposepokedex.domain.model.PokedexListEntryDomainModel
+import com.plcoding.jetpackcomposepokedex.presentation.components.NothingHere
+import com.plcoding.jetpackcomposepokedex.presentation.components.ProcessDialogQueue
 import com.plcoding.jetpackcomposepokedex.ui.theme.RobotoCondensed
 
 @Composable
@@ -122,6 +124,8 @@ fun PokemonList(
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
     val isSearching by remember { viewModel.isSearching }
+    val dialogQueue = viewModel.dialogQueue
+
 
     LazyColumn(contentPadding = PaddingValues(16.dp)) {
         val itemCount = if(pokemonList.size % 2 == 0) {
@@ -147,10 +151,16 @@ fun PokemonList(
             CircularProgressIndicator(color = MaterialTheme.colors.primary)
         }
         if(loadError.isNotEmpty()) {
+
+           // NothingHere()
+            ProcessDialogQueue(
+                dialogQueue = dialogQueue.queue.value
+            )
             RetrySection(error = loadError) {
                 viewModel.loadPokemonPaginated()
             }
         }
+
     }
 
 }

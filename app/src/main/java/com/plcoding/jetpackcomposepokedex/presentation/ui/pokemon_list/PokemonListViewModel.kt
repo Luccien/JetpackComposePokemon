@@ -11,6 +11,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
 import com.plcoding.jetpackcomposepokedex.domain.model.PokedexListEntryDomainModel
 import com.plcoding.jetpackcomposepokedex.interactors.pokemon.GetPokemonListEntries
+import com.plcoding.jetpackcomposepokedex.presentation.ui.util.DialogQueue
+import com.plcoding.jetpackcomposepokedex.presentation.util.ConnectivityManager
 import com.plcoding.jetpackcomposepokedex.util.Constants
 import com.plcoding.jetpackcomposepokedex.util.Constants.PAGE_SIZE
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +25,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PokemonListViewModel @Inject constructor(
-    private val getPokemonListEntries: GetPokemonListEntries
+    private val getPokemonListEntries: GetPokemonListEntries,
+    private val connectivityManager: ConnectivityManager
 ) : ViewModel() {
 
     private var curPage = 0
@@ -38,6 +41,8 @@ class PokemonListViewModel @Inject constructor(
     private var cachedPokemonList = listOf<PokedexListEntryDomainModel>()
     private var isSearchStarting = true
     var isSearching = mutableStateOf(false)
+
+    val dialogQueue = DialogQueue()
 
     init {
         loadPokemonPaginated(true)
@@ -85,10 +90,10 @@ class PokemonListViewModel @Inject constructor(
     }
 
     private fun getPokemonListEntries(onAppStart:Boolean = false){
-       // isLoading.value = true // old loading state
-        getPokemonListEntries.execute(onAppStart,pokemonList.value,PAGE_SIZE, curPage * PAGE_SIZE).onEach{ dataState ->
+        getPokemonListEntries.execute(onAppStart,pokemonList.value,PAGE_SIZE, curPage * PAGE_SIZE,connectivityManager.isNetworkAvailable.value).onEach{ dataState ->
 
-            isLoading.value = dataState.loading // new loading state
+
+            isLoading.value = dataState.loading
 
             dataState.data?.let { data ->
 
@@ -96,7 +101,6 @@ class PokemonListViewModel @Inject constructor(
                 loadError.value = ""
                 isLoading.value = false
 
-                // changed --> list will now be retrieved from db as complete list  // old version was to add only newly retrieved data  //pokemonList.value += data
                 pokemonList.value = data
             }
 
@@ -104,6 +108,7 @@ class PokemonListViewModel @Inject constructor(
                 Log.e(Constants.TAG, "getPokemon: ${error}")
                 loadError.value = error
                 isLoading.value = false
+                dialogQueue.appendErrorMessage("An Error Occurred", error)
             }
 
         }.launchIn(viewModelScope)

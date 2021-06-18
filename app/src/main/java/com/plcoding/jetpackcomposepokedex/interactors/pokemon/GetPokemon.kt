@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 /*
- Avoiding Crashes:
+ Avoiding Crashes: (SAME AS in GetPokemonListEntries)
  A crash which occures when user is loading content: a pokemon for the first time but he does not have a internetconnection.
  Within a try and catch blog whitin a flow (GetPokemon.kt )  throw Exeption() -> which leads to the flow beeing cancelled and in
  this case the app beeing crashed

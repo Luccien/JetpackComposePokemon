@@ -8,7 +8,7 @@ import com.plcoding.jetpackcomposepokedex.cache.PokemonDao
 import com.plcoding.jetpackcomposepokedex.cache.model.PokedexListEntryEntity
 import com.plcoding.jetpackcomposepokedex.cache.model.PokemonEntity
 
-@Database(entities = [PokemonEntity::class,PokedexListEntryEntity::class ], version = 38)
+@Database(entities = [PokemonEntity::class,PokedexListEntryEntity::class ], version = 39)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase(){
 
