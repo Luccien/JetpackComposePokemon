@@ -42,9 +42,8 @@ if (pokemonName == null){
             modifier = Modifier
         )
 
-    } else if (!loading && pokemonDM == null && onLoad) {
+    } else if (!loading && pokemonDM == null && onLoad) { //  can happen when network is not available or local database broken/unavailable
         NothingHere()
-    //  can happen when network is not available or local database broken/unavailable
 
     } else if(pokemonDM != null){
         Box(

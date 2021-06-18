@@ -80,14 +80,14 @@ fun PokemonDetailScreen(
             )
         }
         else{
-            /// todo show missing // but should already be checked in interactor GetPokemon (no info for the user if it is missing yet)
+            /// missing is  already checked in interactor GetPokemon and handled in PokemonDetailsScreenLoader--> there is an info for the user also
         }
 
         Box(contentAlignment = Alignment.TopCenter,
             modifier = Modifier
             .fillMaxSize()) {
 
-            if(pokemonDM?.sprites?.frontDefault != null) { // TODO null check necessary ?? should already be handeled in GetPokemon // here it is a nullcheck for the image url
+            if(pokemonDM?.sprites?.frontDefault != null) {
                 pokemonDM.sprites?.let {
 
                 CoilImage(
