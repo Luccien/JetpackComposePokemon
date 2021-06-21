@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
@@ -23,11 +24,16 @@ import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
+
+
+
 @HiltViewModel
 class PokemonListViewModel @Inject constructor(
     private val getPokemonListEntries: GetPokemonListEntries,
-    private val connectivityManager: ConnectivityManager
-) : ViewModel() {
+    private val connectivityManager: ConnectivityManager,
+    private val savedStateHandle: SavedStateHandle,
+
+    ) : ViewModel() {
 
     private var curPage = 0
 

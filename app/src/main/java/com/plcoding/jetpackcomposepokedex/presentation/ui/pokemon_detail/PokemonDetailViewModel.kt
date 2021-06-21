@@ -33,9 +33,22 @@ class PokemonDetailViewModel @Inject constructor(
 
     val dialogQueue = DialogQueue()
 
-    fun onTriggerEvent(pokemonName: String) {
+    fun onTriggerEvent(event:PokemonEvent){//pokemonName: String) {
         viewModelScope.launch {
-            getPokemon(pokemonName)
+             ///
+            try {
+                when(event){
+                    is PokemonEvent.GetPokemonEvent -> {
+                        if(pokemon.value == null){
+                            getPokemon(event.name)
+                        }
+                    }
+                }
+            }catch (e: Exception){
+                Log.e(TAG, "launchJob: Exception: ${e}, ${e.cause}")
+                e.printStackTrace()
+            }
+            ///
         }
     }
 

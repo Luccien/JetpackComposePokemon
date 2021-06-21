@@ -31,7 +31,7 @@ if (pokemonName == null){
     val onLoad = viewModel.onLoad.value
     if (!onLoad) {
         viewModel.onLoad.value = true
-        viewModel.onTriggerEvent(pokemonName)
+        viewModel.onTriggerEvent(PokemonEvent.GetPokemonEvent(pokemonName))
     }
 
     val loading = viewModel.loading.value
