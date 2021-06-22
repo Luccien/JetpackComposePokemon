@@ -136,7 +136,7 @@ fun PokemonList(
         items(itemCount) {
             if(it >= itemCount - 1 && !endReached && !isLoading && !isSearching) {
                 LaunchedEffect(key1 = true) {
-                    viewModel.loadPokemonPaginated()
+                    viewModel.onTriggerEvent(PokemonListEvent.NextPageEvent)
                 }
             }
             PokedexRow(rowIndex = it, entryDomainModels = pokemonList, navController = navController)
@@ -157,7 +157,7 @@ fun PokemonList(
                 dialogQueue = dialogQueue.queue.value
             )
             RetrySection(error = loadError) {
-                viewModel.loadPokemonPaginated()
+                viewModel.onTriggerEvent(PokemonListEvent.NextPageEvent)
             }
         }
 

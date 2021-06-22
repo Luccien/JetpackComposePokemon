@@ -16,6 +16,7 @@ import com.plcoding.jetpackcomposepokedex.presentation.ui.util.DialogQueue
 import com.plcoding.jetpackcomposepokedex.presentation.util.ConnectivityManager
 import com.plcoding.jetpackcomposepokedex.util.Constants
 import com.plcoding.jetpackcomposepokedex.util.Constants.PAGE_SIZE
+import com.plcoding.jetpackcomposepokedex.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
@@ -51,7 +52,7 @@ class PokemonListViewModel @Inject constructor(
     val dialogQueue = DialogQueue()
 
     init {
-        loadPokemonPaginated(true)
+        onTriggerEvent(PokemonListEvent.NextPageEvent,true)
     }
 
     fun searchPokemonList(query: String) {
@@ -83,19 +84,33 @@ class PokemonListViewModel @Inject constructor(
 
 
 
-
-
-
-    fun loadPokemonPaginated(onAppStart:Boolean = false) {
-        onTriggerEvent(onAppStart)
-    }
-    fun onTriggerEvent(onAppStart:Boolean = false) {
+    fun onTriggerEvent(event: PokemonListEvent,onAppStart:Boolean = false){
         viewModelScope.launch {
-            getPokemonListEntries(onAppStart)
+            try {
+                when(event){
+                    is PokemonListEvent.NewSearchEvent -> {
+                        //TODO //newSearch() //searchPokemonList(query: String)
+                    }
+                    is PokemonListEvent.NextPageEvent -> {
+                        nextPage(onAppStart)
+                    }
+                    is PokemonListEvent.RestoreStateEvent -> {
+                        //TODO //restoreState()
+                    }
+                }
+            }catch (e: Exception){
+                Log.e(TAG, "launchJob: Exception: ${e}, ${e.cause}")
+                e.printStackTrace()
+            }
+            finally {
+                Log.d(TAG, "launchJob: finally called.")
+            }
         }
     }
 
-    private fun getPokemonListEntries(onAppStart:Boolean = false){
+
+
+    private fun nextPage(onAppStart:Boolean = false){
         getPokemonListEntries.execute(onAppStart,pokemonList.value,PAGE_SIZE, curPage * PAGE_SIZE,connectivityManager.isNetworkAvailable.value).onEach{ dataState ->
 
 
