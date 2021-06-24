@@ -40,11 +40,13 @@ class PokemonListViewModel @Inject constructor(
 
     // pokemonList is used in  searchPokemonList(query: String)      and in loadPokemonPaginated() // a searchQuery will just query already loaded pokemonListEntries
     var pokemonList = mutableStateOf<List<PokedexListEntryDomainModel>>(listOf())
-
+    val query = mutableStateOf("")
     var loadError = mutableStateOf("")
     var isLoading = mutableStateOf(false)
     var endReached = mutableStateOf(false) // TODO check its not used -> not switched to true
 
+
+    // cached  means cached in viewmodel as long as this viewmdel lives // cachedPokemonlist will be used to display an empty search
     private var cachedPokemonList = listOf<PokedexListEntryDomainModel>()
     private var isSearchStarting = true
     var isSearching = mutableStateOf(false)
@@ -55,22 +57,33 @@ class PokemonListViewModel @Inject constructor(
         onTriggerEvent(PokemonListEvent.NextPageEvent,true)
     }
 
-    fun searchPokemonList(query: String) {
+
+    fun onQueryChanged(query: String){
+        setQuery(query)
+    }
+
+    private fun setQuery(query: String){
+        this.query.value = query
+    }
+
+    fun searchPokemonList() {
+        Log.d(TAG, "newPokemonList: query: ${query.value}")
+        var quer = query.value
         val listToSearch = if(isSearchStarting) {
             pokemonList.value
         } else {
             cachedPokemonList
         }
         viewModelScope.launch(Dispatchers.Default) {
-            if(query.isEmpty()) {
+            if(quer.isEmpty()) {
                 pokemonList.value = cachedPokemonList
                 isSearching.value = false
                 isSearchStarting = true
                 return@launch
             }
             val results = listToSearch.filter {
-                it.pokemonName.contains(query.trim(), ignoreCase = true) ||
-                        it.number.toString() == query.trim()
+                it.pokemonName.contains(quer.trim(), ignoreCase = true) ||
+                        it.number.toString() == quer.trim()
             }
             if(isSearchStarting) {
                 cachedPokemonList = pokemonList.value
@@ -89,7 +102,7 @@ class PokemonListViewModel @Inject constructor(
             try {
                 when(event){
                     is PokemonListEvent.NewSearchEvent -> {
-                        //TODO //newSearch() //searchPokemonList(query: String)
+                        searchPokemonList()
                     }
                     is PokemonListEvent.NextPageEvent -> {
                         nextPage(onAppStart)

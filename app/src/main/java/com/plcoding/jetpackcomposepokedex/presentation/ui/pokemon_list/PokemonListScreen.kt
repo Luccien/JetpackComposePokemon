@@ -8,11 +8,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
@@ -23,8 +28,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,6 +48,7 @@ import com.plcoding.jetpackcomposepokedex.presentation.components.NothingHere
 import com.plcoding.jetpackcomposepokedex.presentation.components.ProcessDialogQueue
 import com.plcoding.jetpackcomposepokedex.ui.theme.RobotoCondensed
 
+@ExperimentalComposeUiApi
 @Composable
 fun PokemonListScreen(
     navController: NavController,
@@ -48,6 +58,10 @@ fun PokemonListScreen(
         color = MaterialTheme.colors.background,
         modifier = Modifier.fillMaxSize()
     ) {
+
+        val query = viewModel.query.value
+
+
         Column {
             Spacer(modifier = Modifier.height(20.dp))
             Image(
@@ -58,61 +72,80 @@ fun PokemonListScreen(
                     .align(CenterHorizontally)
             )
             SearchBar(
-                hint = "Search...",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                viewModel.searchPokemonList(it)
-            }
+                query = query,
+                onQueryChanged = viewModel::onQueryChanged,
+                onExecuteSearch = {
+                    viewModel.onTriggerEvent(PokemonListEvent.NewSearchEvent)
+                }
+            )
             Spacer(modifier = Modifier.height(16.dp))
             PokemonList(navController = navController)
         }
     }
 }
 
+
+
+
+@ExperimentalComposeUiApi
 @Composable
 fun SearchBar(
-    modifier: Modifier = Modifier,
-    hint: String = "",
-    onSearch: (String) -> Unit = {}
-) {
-    var text by remember {
-        mutableStateOf("")
-    }
-    var isHintDisplayed by remember {
-        mutableStateOf(hint != "")
-    }
+    query: String,
+    onQueryChanged: (String) -> Unit,
+    onExecuteSearch: () -> Unit,
 
-    Box(modifier = modifier) {
-        BasicTextField(
-            value = text,
-            onValueChange = {
-                text = it
-                onSearch(it)
-            },
-            maxLines = 1,
-            singleLine = true,
-            textStyle = TextStyle(color = Color.Black),
-            modifier = Modifier
-                .fillMaxWidth()
-                .shadow(5.dp, CircleShape)
-                .background(Color.White, CircleShape)
-                .padding(horizontal = 20.dp, vertical = 12.dp)
-                .onFocusChanged {
-                    isHintDisplayed = it != FocusState.Active && text.isEmpty()
-                }
-        )
-        if(isHintDisplayed) {
-            Text(
-                text = hint,
-                color = Color.LightGray,
+) {
+   //val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth(),
+        color = MaterialTheme.colors.secondary,
+        elevation = 8.dp,
+    ) {
+        Column {
+            Row(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp, vertical = 12.dp)
-            )
+                    .fillMaxWidth()
+            ) {
+                TextField(
+                    modifier = Modifier
+                        .fillMaxWidth(.9f)
+                        .padding(8.dp)
+                    ,
+                    value = query,
+                    onValueChange = {
+                        onQueryChanged(it)
+                        // will execute the search whenever  query string is changed // could be commented out if only keyboard finish is clicked should start a search
+                        onExecuteSearch()
+                                    },
+                    label = { Text(text = "Search") },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done,
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            // will only execute when finish arrow at keyboard is clicked
+                            onExecuteSearch()
+                            //focusManager.clearFocus(forcedClear = true) // close keyboard
+                            keyboardController?.hide() // another way to close keyboard
+                        },
+                    ),
+                    leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search Icon") },
+                    textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
+                    colors = TextFieldDefaults.textFieldColors(backgroundColor = MaterialTheme.colors.surface),
+                )
+            }
+
+
+
         }
     }
 }
+
+
+
 
 @Composable
 fun PokemonList(
