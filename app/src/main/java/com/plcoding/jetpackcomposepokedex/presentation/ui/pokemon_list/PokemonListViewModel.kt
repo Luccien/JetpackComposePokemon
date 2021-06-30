@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
 import com.plcoding.jetpackcomposepokedex.domain.model.PokedexListEntryDomainModel
 import com.plcoding.jetpackcomposepokedex.interactors.pokemon.GetPokemonListEntries
+import com.plcoding.jetpackcomposepokedex.interactors.pokemon.RestorePokemon
 import com.plcoding.jetpackcomposepokedex.presentation.ui.util.DialogQueue
 import com.plcoding.jetpackcomposepokedex.presentation.util.ConnectivityManager
 import com.plcoding.jetpackcomposepokedex.util.Constants
@@ -25,12 +26,16 @@ import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
-
+//TODO
+const val STATE_KEY_PAGE = "pokedex.state.page.key"
+const val STATE_KEY_QUERY = "pokedex.state.query.key"
+const val STATE_KEY_LIST_POSITION = "pokedex.state.query.list_position"
 
 
 @HiltViewModel
 class PokemonListViewModel @Inject constructor(
     private val getPokemonListEntries: GetPokemonListEntries,
+    private val restorePokemon: RestorePokemon,
     private val connectivityManager: ConnectivityManager,
     private val savedStateHandle: SavedStateHandle,
 
@@ -54,8 +59,36 @@ class PokemonListViewModel @Inject constructor(
     val dialogQueue = DialogQueue()
 
     init {
-        onTriggerEvent(PokemonListEvent.NextPageEvent,true)
+
+        // TODO
+        /*
+        savedStateHandle.get<Int>(STATE_KEY_PAGE)?.let { p ->
+            setPage(p)
+        }
+         savedStateHandle.get<Int>(STATE_KEY_LIST_POSITION)?.let { p ->
+            setListScrollPosition(p)
+        }
+         */
+
+
+
+        savedStateHandle.get<String>(STATE_KEY_QUERY)?.let { q ->
+            setQuery(q)
+        }
+
+        // TODO CHANGE TO scrollPositionCheck
+        //if(pokemonListScrollPosition != 0){
+        if(query.value != ""){
+            onTriggerEvent(PokemonListEvent.RestoreStateEvent)
+        }
+        else{
+            onTriggerEvent(PokemonListEvent.NextPageEvent,true)
+        }
+
     }
+
+
+
 
 
     fun onQueryChanged(query: String){
@@ -64,6 +97,8 @@ class PokemonListViewModel @Inject constructor(
 
     private fun setQuery(query: String){
         this.query.value = query
+        savedStateHandle.set(STATE_KEY_QUERY, query)
+
     }
 
     fun searchPokemonList() {
@@ -108,7 +143,7 @@ class PokemonListViewModel @Inject constructor(
                         nextPage(onAppStart)
                     }
                     is PokemonListEvent.RestoreStateEvent -> {
-                        //TODO //restoreState()
+                        restoreState()
                     }
                 }
             }catch (e: Exception){
@@ -123,9 +158,38 @@ class PokemonListViewModel @Inject constructor(
 
 
 
+
+    private fun restoreState(){
+        restorePokemon.execute().onEach{ dataState ->
+
+            isLoading.value = dataState.loading
+
+            dataState.data?.let { data ->
+                curPage++
+                loadError.value = ""
+                isLoading.value = false
+                pokemonList.value = data
+                // trigger a search event ->if app crashed with a not empty search query
+                if(query.value != "") {
+                    onTriggerEvent(PokemonListEvent.NewSearchEvent)
+                }
+            }
+
+            dataState.error?.let { error ->
+                loadError.value = error
+                isLoading.value = false
+                dialogQueue.appendErrorMessage("An Error Occurred", error)
+            }
+
+        }.launchIn(viewModelScope)
+    }
+
+
+
+
+
     private fun nextPage(onAppStart:Boolean = false){
         getPokemonListEntries.execute(onAppStart,pokemonList.value,PAGE_SIZE, curPage * PAGE_SIZE,connectivityManager.isNetworkAvailable.value).onEach{ dataState ->
-
 
             isLoading.value = dataState.loading
 
