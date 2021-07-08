@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
-//TODO
+
 const val STATE_KEY_PAGE = "pokedex.state.page.key"
 const val STATE_KEY_QUERY = "pokedex.state.query.key"
 const val STATE_KEY_LIST_POSITION = "pokedex.state.query.list_position"
@@ -57,39 +57,47 @@ class PokemonListViewModel @Inject constructor(
     var isSearching = mutableStateOf(false)
 
     val dialogQueue = DialogQueue()
+    var pokemonListScrollPosition = 0
+
 
     init {
-
-        // TODO
-        /*
         savedStateHandle.get<Int>(STATE_KEY_PAGE)?.let { p ->
             setPage(p)
         }
          savedStateHandle.get<Int>(STATE_KEY_LIST_POSITION)?.let { p ->
             setListScrollPosition(p)
         }
-         */
-
-
-
         savedStateHandle.get<String>(STATE_KEY_QUERY)?.let { q ->
             setQuery(q)
         }
 
-        // TODO CHANGE TO scrollPositionCheck
-        //if(pokemonListScrollPosition != 0){
-        if(query.value != ""){
+
+        if(pokemonListScrollPosition != 0){
             onTriggerEvent(PokemonListEvent.RestoreStateEvent)
         }
         else{
             onTriggerEvent(PokemonListEvent.NextPageEvent,true)
         }
-
     }
 
 
 
+    fun onChangePokemonScrollPosition(position: Int){
+        setListScrollPosition(position = position)
+    }
+    private fun setListScrollPosition(position: Int){
+        pokemonListScrollPosition = position
+        savedStateHandle.set(STATE_KEY_LIST_POSITION, position)
+    }
 
+    private fun incrementPage(){
+        setPage(curPage + 1)
+    }
+
+    private fun setPage(page: Int){
+        this.curPage = page
+        savedStateHandle.set(STATE_KEY_PAGE, page)
+    }
 
     fun onQueryChanged(query: String){
         setQuery(query)
@@ -165,7 +173,7 @@ class PokemonListViewModel @Inject constructor(
             isLoading.value = dataState.loading
 
             dataState.data?.let { data ->
-                curPage++
+                incrementPage()
                 loadError.value = ""
                 isLoading.value = false
                 pokemonList.value = data
@@ -195,7 +203,7 @@ class PokemonListViewModel @Inject constructor(
 
             dataState.data?.let { data ->
 
-                curPage++
+                incrementPage()
                 loadError.value = ""
                 isLoading.value = false
 
