@@ -29,7 +29,7 @@ import javax.inject.Inject
 
 const val STATE_KEY_PAGE = "pokedex.state.page.key"
 const val STATE_KEY_QUERY = "pokedex.state.query.key"
-const val STATE_KEY_LIST_POSITION = "pokedex.state.query.list_position"
+//const val STATE_KEY_LIST_POSITION = "pokedex.state.query.list_position"
 
 
 @HiltViewModel
@@ -57,23 +57,24 @@ class PokemonListViewModel @Inject constructor(
     var isSearching = mutableStateOf(false)
 
     val dialogQueue = DialogQueue()
-    var pokemonListScrollPosition = 0
+
+    // maybe add list scroll position later for restoring after process death
+    //var pokemonListScrollPosition = 0
 
 
     init {
         savedStateHandle.get<Int>(STATE_KEY_PAGE)?.let { p ->
             setPage(p)
         }
-         savedStateHandle.get<Int>(STATE_KEY_LIST_POSITION)?.let { p ->
+        /* savedStateHandle.get<Int>(STATE_KEY_LIST_POSITION)?.let { p ->
             setListScrollPosition(p)
-        }
+        }*/
         savedStateHandle.get<String>(STATE_KEY_QUERY)?.let { q ->
             setQuery(q)
         }
 
-
-        if(pokemonListScrollPosition != 0){
-            onTriggerEvent(PokemonListEvent.RestoreStateEvent)
+        if(curPage != 0 || query.value !="" ){  //(|| pokemonListScrollPosition != 0) // maybe add scrollposition later
+                onTriggerEvent(PokemonListEvent.RestoreStateEvent)
         }
         else{
             onTriggerEvent(PokemonListEvent.NextPageEvent,true)
@@ -81,7 +82,7 @@ class PokemonListViewModel @Inject constructor(
     }
 
 
-
+/* // MAYBE ADD LATER
     fun onChangePokemonScrollPosition(position: Int){
         setListScrollPosition(position = position)
     }
@@ -89,7 +90,7 @@ class PokemonListViewModel @Inject constructor(
         pokemonListScrollPosition = position
         savedStateHandle.set(STATE_KEY_LIST_POSITION, position)
     }
-
+*/
     private fun incrementPage(){
         setPage(curPage + 1)
     }
