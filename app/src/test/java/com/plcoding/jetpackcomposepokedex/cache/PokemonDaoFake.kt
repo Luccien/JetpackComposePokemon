@@ -1,31 +1,22 @@
 package com.plcoding.jetpackcomposepokedex.cache
 
-import com.plcoding.jetpackcomposepokedex.cache.model.PokemonEntity
+import com.plcoding.jetpackcomposepokedex.cache.model.PokedexListEntryEntity
 
 class PokemonDaoFake (
     private val appDatabaseFake: AppDatabaseFake
-        ): PokemonDao {
-    override suspend fun insertPokemon(pokemon: PokemonEntity): Long {
-        appDatabaseFake.pokemons.add(pokemon)
+        ): PokedexListEntryDao {
+    override suspend fun insertPokemonListEntry(pokedexListEntry: PokedexListEntryEntity): Long {
+        appDatabaseFake.pokemons.add(pokedexListEntry)
         return 1 // return success
     }
 
-    override suspend fun insertPokemons(pokemon: List<PokemonEntity>): LongArray {
-        appDatabaseFake.pokemons.addAll(pokemon)
+    override suspend fun insertPokemonList(pokedexList: List<PokedexListEntryEntity>): LongArray {
+        appDatabaseFake.pokemons.addAll(pokedexList)
         return longArrayOf(1) // return success
     }
 
-    override suspend fun getPokemonByName(name: String): PokemonEntity? {
-        return appDatabaseFake.pokemons.find { it.name == name }
-    }
-
-    override suspend fun deletePokemons(ids: List<Int>): Int {
-        appDatabaseFake.pokemons.removeIf { it.id in ids }
-        return 1 // return success
-    }
-
-    override suspend fun deleteAllPokemons() {
-        appDatabaseFake.pokemons.clear()
+    override suspend fun getCompletePokedexList(): List<PokedexListEntryEntity> {
+        return appDatabaseFake.pokemons
     }
 
 }

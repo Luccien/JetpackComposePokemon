@@ -21,16 +21,6 @@ interface PokemonDao {
     suspend fun getPokemonByName(name: String): PokemonEntity?
 
 
-
-    // TODO was causing error -- check later
-    /*
-    @Query("DELETE FROM pokemons WHERE name = :name")
-    suspend fun deletePokemon(name: String): String
-*/
-
-
-
-
     @Query("DELETE FROM pokemons WHERE id IN (:ids)")
     suspend fun deletePokemons(ids: List<Int>): Int
 

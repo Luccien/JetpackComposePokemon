@@ -45,6 +45,9 @@ class PokemonListViewModel @Inject constructor(
 
     // pokemonList is used in  searchPokemonList(query: String)      and in loadPokemonPaginated() // a searchQuery will just query already loaded pokemonListEntries
     var pokemonList = mutableStateOf<List<PokedexListEntryDomainModel>>(listOf())
+   private var cachedPokemonList = listOf<PokedexListEntryDomainModel>()
+
+
     val query = mutableStateOf("")
     var loadError = mutableStateOf("")
     var isLoading = mutableStateOf(false)
@@ -52,7 +55,7 @@ class PokemonListViewModel @Inject constructor(
 
 
     // cached  means cached in viewmodel as long as this viewmdel lives // cachedPokemonlist will be used to display an empty search
-    private var cachedPokemonList = listOf<PokedexListEntryDomainModel>()
+
     private var isSearchStarting = true
     var isSearching = mutableStateOf(false)
 
