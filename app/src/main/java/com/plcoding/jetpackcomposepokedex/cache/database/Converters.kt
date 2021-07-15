@@ -45,9 +45,7 @@ class Converters {
 
 
 
-// TODO ---- DELETE this if solved --- check is the @ColumnInfo(name = "stats") for the naming fun fromStats()    or type?
-    // TODO this way is not optimal because it can cause errors when the   api (response models) changes but of course also the response models have to change than--> it will be noticed
-    // TODO erorrs could be caused if name or url has following strings: ",,,,q" ";;;;q"
+    // erorrs could be caused if name or url has following strings: ",,,,q" ";;;;q"
 
     @TypeConverter
     fun fromStats(stats:List<Stat>):String{
@@ -138,22 +136,5 @@ class Converters {
 
 
 
-
-
-
-    // TODO Check if Gson() converter is a  better choice...
-    /*
-    companion object {
-
-        @JvmStatic
-        @TypeConverter
-        fun fromStat(stat: List<Stat>) = Gson().toJson(stat)
-
-        @JvmStatic
-        @TypeConverter
-        fun toStat(s: String): Stat =
-            Gson().fromJson(s, Stat::class.java)
-    }
-*/
 
 }

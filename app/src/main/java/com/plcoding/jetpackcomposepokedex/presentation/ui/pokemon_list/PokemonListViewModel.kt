@@ -51,7 +51,7 @@ class PokemonListViewModel @Inject constructor(
     val query = mutableStateOf("")
     var loadError = mutableStateOf("")
     var isLoading = mutableStateOf(false)
-    var endReached = mutableStateOf(false) // TODO check its not used -> not switched to true
+    var endReached = mutableStateOf(false) // check its not used -> not switched to true
 
 
     // cached  means cached in viewmodel as long as this viewmdel lives // cachedPokemonlist will be used to display an empty search
